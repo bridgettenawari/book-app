@@ -4,9 +4,9 @@ It was made using:
   React
   TailwindCSS
 
-1. Set-up instructions.
-  Run 'npm install' on your terminal.
-  To view the application, run 'npm run dev'
+1. Set-up instructions:
+  - Run 'npm install' on your terminal.
+  - To view the application, run 'npm run dev'
 
 2. API used:
 
