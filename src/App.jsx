@@ -1,19 +1,17 @@
-import { useState } from 'react'
-import './App.css'
-import MovieList from './components/MovieList'
-import NavigationBar from './components/NavigationBar/NavigationBar'
-import SideBar from './components/SideBar'
+import { useState } from "react";
+import "./App.css";
+import BookList from "./components/BookList/BookList";
+import NavigationBar from "./components/NavigationBar/NavigationBar";
+import SideBar from "./components/SideBar/SideBar";
 
 function App() {
-  return (
-    <>
-    <nav>
-      <NavigationBar />
-    </nav>
-    <SideBar />
-    <MovieList />
-    </>
-  )
+	return (
+		<>
+			<NavigationBar />
+			<SideBar />
+			<BookList />
+		</>
+	);
 }
 
-export default App
+export default App;
