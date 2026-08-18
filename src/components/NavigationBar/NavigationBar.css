@@ -1,0 +1,24 @@
+.title{
+  font-family: "Mea Culpa", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 40px;
+  padding: 20px;
+}
+.bar{
+  background-color: rgb(55, 34, 80);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.label{
+  font-size: 20px;
+  font-family: sans-serif;
+}
+.input{
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px;
+  margin-left: 5px;
+}
