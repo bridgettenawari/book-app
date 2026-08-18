@@ -1,8 +1,8 @@
 This is a movie application where you can view all your favourite movies.
 
 It was made using:
-  React
-  TailwindCSS
+  - React
+  - TailwindCSS
 
 1. Set-up instructions:
   - Run 'npm install' on your terminal.
