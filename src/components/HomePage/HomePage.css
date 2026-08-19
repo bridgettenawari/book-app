@@ -1,0 +1,83 @@
+.homepage {
+	text-align: center;
+}
+.home-title {
+	font-family: "Mea Culpa", sans-serif;
+	font-weight: 700;
+	font-style: normal;
+	font-size: 50px;
+	padding: 20px;
+}
+.home-message {
+	font-family: sans-serif;
+	font-weight: 400;
+	font-style: normal;
+	font-size: 40px;
+	padding: 20px;
+}
+.home-book-image {
+	width: 200px;
+	height: 200px;
+	object-fit: cover;
+	padding: 10px;
+	margin: 1px;
+}
+.signup,
+.login {
+	padding: 20px;
+	border-radius: 10px;
+	margin: 10px;
+	background-color: white;
+	color: rgb(87, 87, 87);
+	font-size: 15px;
+	transition: all;
+	border: 1px solid rgba(0, 0, 0, 0.036);
+}
+.signup:hover {
+	transform: scale(1.05);
+	cursor: pointer;
+	background-color: green;
+	color: black;
+}
+.login:hover {
+	transform: scale(1.05);
+	cursor: pointer;
+	background-color: red;
+	color: black;
+}
+.contacts {
+	border: 1px solid rgba(255, 255, 255, 0.446);
+	padding: 30px;
+	margin: 20px auto; 
+	max-width: 400px; 
+	text-align: center; 
+	border-radius: 20px; 
+}
+.contacts-text{
+  font-family: sans-serif;
+	font-weight: 700;
+	font-size: 20px;
+  margin: 5px;
+}
+.phone{
+  font-family: sans-serif;
+	font-weight: 200;
+	font-size: 20px;
+  margin: 5px;
+  color: white;
+  text-decoration: none;
+}
+.email{
+  font-family: sans-serif;
+	font-weight: 200;
+	font-style: normal;
+	font-size: 20px;
+  color: white;
+  text-decoration: none;
+}
+.phone:visited, .email:visited{
+  color: rgb(150, 150, 150)
+}
+.phone:hover, .email:hover{
+  color: rgb(185, 185, 185)
+}

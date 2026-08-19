@@ -19,4 +19,5 @@ It was made using:
   - 'https://openlibrary.org/search.json?q=[searchterm]' is the search API
 
 3. Known challenges/bugs:
-  - Using the API search endpoint
+  - When you search, in order for it to go back to the original page you have to refresh the page.
+  - Results load slowly.
