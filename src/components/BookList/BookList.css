@@ -1,0 +1,6 @@
+.book-list{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /*number of columns and size of column*/
+  gap: 16px;
+  padding: 16px;
+}
