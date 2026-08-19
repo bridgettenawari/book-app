@@ -1,5 +1,5 @@
 import './NavigationBar.css'
-function NavigationBar() {
+function NavigationBar(onSearch) {
   return (
     <div className='bar'>
     <h1 className='title'>Loco for Literature</h1>
