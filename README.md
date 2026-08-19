@@ -1,4 +1,4 @@
-This is a movie application where you can view all your favourite movies.
+This is a book application where you can view all your favourite book.
 
 It was made using:
   - React
