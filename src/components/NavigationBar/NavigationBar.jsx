@@ -1,4 +1,5 @@
 import './NavigationBar.css'
+// When receiving props from a parent don't forget to put them in curly brackets or your code will fail
 function NavigationBar({ onSearch }) {
   return (
     <div className='bar'>

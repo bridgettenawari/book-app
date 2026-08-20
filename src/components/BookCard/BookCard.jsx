@@ -1,9 +1,7 @@
 import "./BookCard.css";
 
 function BookCard({ book }) {
-	const cover = book.cover_i // Book cover image ID
-		? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`
-		: `https://via.placeholder.com/150`;
+	const cover = `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`; /*The book.cover_i is the image code so your supposed to input it into the cover URL to get the book covers*/
 
 	return (
 		<div className="book-card">
@@ -22,12 +20,12 @@ function BookCard({ book }) {
 				{book.author_name ? book.author_name[0] : "Author unknown"}
 			</h4>
 			<p className="ebook">{`Ebook availability: ${book.ebook_access}`}</p>
-
+				{/* Since languages are in an array, loop through them to display them individually */}
 			{book.language ? (
 				<div className="languages-container">
           Languages:
 					{book.language.map((lang) => (
-						<div key={lang} className="language">
+						<div className="language">
 							{lang}
 						</div>
 					))}

@@ -15,7 +15,7 @@ It was made using:
   - To view the application, run 'npm run dev'
 
 2. API and endpoints used:
-  - 'https://openlibrary.org/search.json?q=girl&limit=20' is the homepage since the API doesn't have an option to display all books
+  - 'https://openlibrary.org/search.json?q=girl&limit=40' is the homepage since the API doesn't have an option to display all books
   - 'https://openlibrary.org/search.json?q=[searchterm]' is the search API
 
 3. Known challenges/bugs:

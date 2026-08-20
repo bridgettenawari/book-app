@@ -12,12 +12,12 @@ import BookList from "./components/BookList/BookList";
 import NavigationBar from "./components/NavigationBar/NavigationBar";
 
 function App() {
-	const [books, setBooks] = useState([]);
+	const [books, setBooks] = useState([]); 
 	const [search, setSearch] = useState();
 
 	// useEffect for homepage
 	useEffect(() => {
-		fetch("https://openlibrary.org/search.json?q=girl&limit=20") // Set the original to a random search term
+		fetch("https://openlibrary.org/search.json?q=girl&limit=40") // Set the original to a random search term
 			.then((res) => {
 				if (!res.ok) throw new Error(`${res.status}`);
 				return res.json();
@@ -26,12 +26,13 @@ function App() {
 				setBooks(data.docs);
 			})
 			.catch((err) => console.error(err));
-	}, []);
+			// only need to clean up useEffect when using timers, event listeners e.t.c
+	}, []); // only runs on mount
 
 	// useEffect for searching
 	useEffect(() => {
 		if (!search) return; // Skips if nothing has been searched for
-		fetch(`https://openlibrary.org/search.json?q=${search}&limit=20`)
+		fetch(`https://openlibrary.org/search.json?q=${search}&limit=40`) 
 			.then((res) => {
 				if (!res.ok) throw new Error(`${res.status}`);
 				return res.json();
@@ -45,15 +46,17 @@ function App() {
 	return (
 		<div>
 			<BrowserRouter>
-			<NavigationBar onSearch={setSearch} />
-				<NavLink className='navlinks'to="/">🏠︎ Home</NavLink>
-				<NavLink className='navlinks'to="/books">🗒 Books</NavLink>
+				<NavigationBar onSearch={setSearch} />
+				<NavLink className="navlinks" to="/">
+					🏠︎ Home
+				</NavLink>
+				<NavLink className="navlinks" to="/books">
+					🗒 Books
+				</NavLink>
 				<Routes>
-					<Route path='/' element={<HomePage />}/>
-					<Route path='/books' element={<BookList books={books} />}/>
+					<Route path="/" element={<HomePage />} />
+					<Route path="/books" element={<BookList books={books} />} />
 				</Routes>
-				
-				
 			</BrowserRouter>
 		</div>
 	);
