@@ -9,10 +9,10 @@ function HomePage() {
 				src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQL2fXTybHERglZmGbNrhX9y5NXhDALazkGbQ&s"
 				alt="book"
 			/>
-			<div className="authorization">
-				<button className="signup" disabled>Sign Up</button>
-				<button className="login" disabled>Login</button>
-			</div>
+			{/* <div className="authorization"> */}
+				{/* <button className="signup" >Sign Up</button> */}
+				{/* <button className="login" >Login</button> */}
+			{/* </div> */}
 			<div className="contacts">
 				<p className="contacts-text">Contact me:</p>
 				<p className="phone"><a className="phone" href="tel:+254712345678">☏ +254712345678</a></p>
