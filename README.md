@@ -19,7 +19,5 @@ It was made using:
   - 'https://openlibrary.org/search.json?q=[searchterm]' is the search API
 
 3. Known challenges/bugs:
-  - Finding an API that has ebook links
-  - Finding an API that shows a shop website where you can buy a copy of the book.
   - When you search, in order for it to go back to the original page you have to refresh the page.
   - Results load slowly.

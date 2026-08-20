@@ -4,7 +4,7 @@ function BookCard({ book, onFavorite, favorites = [] }) {
 		? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`
 		: "https://via.placeholder.com/150";
 
-	const isFavorite = favorites.some((fav) => fav.key === book.key);
+	const isFavorite = favorites.some((fav) => fav.key === book.key); // Loops thru the favorites array and checks if the book key and fav id are the same
 
 	return (
 		<div className="book-card">
@@ -22,7 +22,7 @@ function BookCard({ book, onFavorite, favorites = [] }) {
 			<h4 className="book-author">
 				{book.author_name ? book.author_name[0] : "Author unknown"}
 			</h4>
-
+					{/* If the ebook access is public or borrowable, open the ebook page */}
 			{(book.ebook_access === "public" || book.ebook_access === "borrowable") &&
 				book.ia && (
 					<a
@@ -34,7 +34,7 @@ function BookCard({ book, onFavorite, favorites = [] }) {
 						📓 EPUB
 					</a>
 				)}
-
+				{/* If there's an isbn on amazon, show the link but if not open it on open library */}
 			{book.isbn && book.isbn.length > 0 ? (
 				<a
 					href={`https://www.amazon.com/s?k=${book.isbn[0]}`}
@@ -74,7 +74,7 @@ function BookCard({ book, onFavorite, favorites = [] }) {
 				className={`favorite-btn ${isFavorite ? "favorited" : ""}`}
 				onClick={() => onFavorite(book)}
 			>
-				{isFavorite ? " ★" : " ☆"}
+				{isFavorite ? "★" : " ☆"}
 			</button>
 		</div>
 	);

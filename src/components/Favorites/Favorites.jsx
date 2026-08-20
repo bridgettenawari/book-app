@@ -6,7 +6,7 @@ function Favorites({ favorites, onFavorite }) {
     <div className="favorites-list">
       <h1 className="fav"> ★Favorites ★</h1>
       {favorites.length === 0 ? (
-        <p>No favorites yet. Add some from the Books page!</p>
+        <p>No favorites yet!</p>
       ) : (
         favorites.map((book) => (
           <BookCard key={book.key} book={book} onFavorite={onFavorite} />
