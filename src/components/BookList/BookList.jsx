@@ -4,7 +4,7 @@ function BookList({ books, error, onFavorite, favorites }) {
 	return (
 		<div className="book-list">
 			{/* When mapping, after the arrow always use normal brackets not curly brackets */}
-			{error && <div className="error-message">Error: {error} </div>}
+			{/* {error && <div className="error-message">Error: {error} </div>} */}
 			{books.map((book) => (
 				<BookCard
 					key={book.key}
