@@ -14,6 +14,7 @@ import NavigationBar from "./components/NavigationBar/NavigationBar";
 function App() {
 	const [books, setBooks] = useState([]); 
 	const [search, setSearch] = useState();
+	const [error, setError] = useState(null);
 
 	// useEffect for homepage
 	useEffect(() => {
@@ -25,7 +26,7 @@ function App() {
 			.then((data) => {
 				setBooks(data.docs);
 			})
-			.catch((err) => console.error(err));
+			.catch((err) => setError(err.message));
 			// only need to clean up useEffect when using timers, event listeners e.t.c
 	}, []); // only runs on mount
 
@@ -40,7 +41,7 @@ function App() {
 			.then((data) => {
 				setBooks(data.docs);
 			})
-			.catch((err) => console.error(err));
+			.catch((err) => setError(err.message));
 	}, [search]); // only updates DOM when search is updated
 
 	return (
