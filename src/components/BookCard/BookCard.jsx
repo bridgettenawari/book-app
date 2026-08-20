@@ -31,7 +31,7 @@ function BookCard({ book, onFavorite, favorites = [] }) {
 						rel="noopener noreferrer"
 						className="epub-link"
 					>
-						📖 Read EPUB
+						📓 EPUB
 					</a>
 				)}
 
@@ -42,7 +42,7 @@ function BookCard({ book, onFavorite, favorites = [] }) {
 					rel="noopener noreferrer"
 					className="purchase-link"
 				>
-					🛒 Buy Online
+					🛒 Purchase
 				</a>
 			) : (
 				<a
@@ -51,7 +51,7 @@ function BookCard({ book, onFavorite, favorites = [] }) {
 					rel="noopener noreferrer"
 					className="purchase-link"
 				>
-					📚 View on OpenLibrary
+					📖 Open Library
 				</a>
 			)}
 
