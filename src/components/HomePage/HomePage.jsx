@@ -10,8 +10,8 @@ function HomePage() {
 				alt="book"
 			/>
 			<div className="authorization">
-				<button className="signup">Sign Up</button>
-				<button className="login">Login</button>
+				<button className="signup" disabled>Sign Up</button>
+				<button className="login" disabled>Login</button>
 			</div>
 			<div className="contacts">
 				<p className="contacts-text">Contact me:</p>
