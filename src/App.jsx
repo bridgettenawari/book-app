@@ -1,20 +1,24 @@
 import { useEffect, useState } from "react";
-import {
-	BrowserRouter as Router,
-	Routes,
-	Route,
-	BrowserRouter,
-	NavLink,
-} from "react-router-dom";
+import { Routes, Route, BrowserRouter, NavLink } from "react-router-dom";
 import "./App.css";
 import HomePage from "./components/HomePage/HomePage";
 import BookList from "./components/BookList/BookList";
 import NavigationBar from "./components/NavigationBar/NavigationBar";
+import Favorites from "./components/Favorites/Favorites";
 
 function App() {
-	const [books, setBooks] = useState([]); 
+	const [books, setBooks] = useState([]);
 	const [search, setSearch] = useState();
 	const [error, setError] = useState(null);
+	const [favorites, setFavorites] = useState([]);
+
+	const toggleFavorite = (book) => {
+		setFavorites((prev) =>
+			prev.find((fav) => fav.key === book.key)
+				? prev.filter((fav) => fav.key !== book.key)
+				: [...prev, book],
+		);
+	};
 
 	// useEffect for homepage
 	useEffect(() => {
@@ -27,13 +31,13 @@ function App() {
 				setBooks(data.docs);
 			})
 			.catch((err) => setError(err.message));
-			// only need to clean up useEffect when using timers, event listeners e.t.c
+		// only need to clean up useEffect when using timers, event listeners e.t.c
 	}, []); // only runs on mount
 
 	// useEffect for searching
 	useEffect(() => {
 		if (!search) return; // Skips if nothing has been searched for
-		fetch(`https://openlibrary.org/search.json?q=${search}&limit=40`) 
+		fetch(`https://openlibrary.org/search.json?q=${search}&limit=40`)
 			.then((res) => {
 				if (!res.ok) throw new Error(`${res.status}`);
 				return res.json();
@@ -54,9 +58,28 @@ function App() {
 				<NavLink className="navlinks" to="/books">
 					🗒 Books
 				</NavLink>
+				<NavLink className="navlinks" to="/favorites">
+					✩ Favorites
+				</NavLink>
 				<Routes>
 					<Route path="/" element={<HomePage />} />
-					<Route path="/books" element={<BookList books={books} />} />
+					<Route
+						path="/books"
+						element={
+							<BookList
+								books={books}
+								error={error}
+								onFavorite={toggleFavorite}
+								favorites={favorites}
+							/>
+						}
+					/>
+					<Route
+						path="/favorites"
+						element={
+							<Favorites favorites={favorites} onFavorite={toggleFavorite} />
+						}
+					/>
 				</Routes>
 			</BrowserRouter>
 		</div>

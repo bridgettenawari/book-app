@@ -89,3 +89,47 @@
   font-size: 12px;
   margin: 1px;
 }
+.epub-link, .purchase-link {
+  display: inline-block;
+  margin: 8px;
+  padding: 8px 12px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-size: 12px;
+  font-family: sans-serif;
+  transition: all 0.3s ease;
+}
+
+.epub-link {
+  background-color: #f4caec;
+  color: white;
+}
+
+.epub-link:hover {
+  background-color: #f4dbf0;
+}
+
+.purchase-link {
+  background-color: #581e2e;
+  color: white;
+}
+
+.purchase-link:hover {
+  background-color: #724c57;
+}
+.favorite-btn {
+  background-color: #e8b780;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+  font-size: 12px;
+  font-family: sans-serif;
+}
+
+.favorite-btn:hover {
+  background-color: #c2185b;
+}

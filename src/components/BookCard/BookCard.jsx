@@ -1,7 +1,10 @@
 import "./BookCard.css";
+function BookCard({ book, onFavorite, favorites = [] }) {
+	const cover = book.cover_i
+		? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`
+		: "https://via.placeholder.com/150";
 
-function BookCard({ book }) {
-	const cover = `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`; /*The book.cover_i is the image code so your supposed to input it into the cover URL to get the book covers*/
+	const isFavorite = favorites.some((fav) => fav.key === book.key);
 
 	return (
 		<div className="book-card">
@@ -19,13 +22,46 @@ function BookCard({ book }) {
 			<h4 className="book-author">
 				{book.author_name ? book.author_name[0] : "Author unknown"}
 			</h4>
+
+			{(book.ebook_access === "public" || book.ebook_access === "borrowable") &&
+				book.ia && (
+					<a
+						href={`https://archive.org/details/${book.ia[0]}`}
+						target="_blank"
+						rel="noopener noreferrer"
+						className="epub-link"
+					>
+						📖 Read EPUB
+					</a>
+				)}
+
+			{book.isbn && book.isbn.length > 0 ? (
+				<a
+					href={`https://www.amazon.com/s?k=${book.isbn[0]}`}
+					target="_blank"
+					rel="noopener noreferrer"
+					className="purchase-link"
+				>
+					🛒 Buy Online
+				</a>
+			) : (
+				<a
+					href={`https://openlibrary.org${book.key}`}
+					target="_blank"
+					rel="noopener noreferrer"
+					className="purchase-link"
+				>
+					📚 View on OpenLibrary
+				</a>
+			)}
+
 			<p className="ebook">{`Ebook availability: ${book.ebook_access}`}</p>
-				{/* Since languages are in an array, loop through them to display them individually */}
+
 			{book.language ? (
 				<div className="languages-container">
-          Languages:
-					{book.language.map((lang) => (
-						<div className="language">
+					Languages:
+					{book.language.map((lang, idx) => (
+						<div key={idx} className="language">
 							{lang}
 						</div>
 					))}
@@ -33,6 +69,13 @@ function BookCard({ book }) {
 			) : (
 				"No language indicated"
 			)}
+
+			<button
+				className={`favorite-btn ${isFavorite ? "favorited" : ""}`}
+				onClick={() => onFavorite(book)}
+			>
+				{isFavorite ? " ★" : " ☆"}
+			</button>
 		</div>
 	);
 }
