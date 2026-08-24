@@ -1,0 +1,38 @@
+.bar {
+  background-color: white;
+  border-bottom: 1px solid #ddd;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-family: "Mea Culpa", sans-serif;
+  font-size: 36px;
+  color: #4CAF50;
+}
+
+.label {
+  font-size: 16px;
+  margin-right: 8px;
+  font-family: sans-serif;
+  font-weight: 100;
+}
+
+.input {
+  padding: 8px 12px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+.search-btn{
+  border: 1px solid white;
+  color: white;
+  background-color: #4CAF50;
+  padding: 4px 10px;
+  margin: 2px;
+  border-radius: 20px;
+  font-size: 20px;
+}

@@ -1,0 +1,68 @@
+.homepage {
+	padding: 40px;
+}
+
+.home-div {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.home-text {
+	max-width: 50%;
+}
+
+.home-title {
+	font-size: 36px;
+	color: #4caf50;
+}
+
+.home-message {
+	font-size: 18px;
+	color: #555;
+	margin: 20px 0;
+}
+
+.home-buttons {
+	display: flex;
+	gap: 12px;
+	margin: 20px 0;
+}
+
+.github-btn,
+.login-btn {
+	background-color: #4caf50;
+	color: white;
+	border: none;
+	padding: 12px 20px;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: all;
+}
+
+.github-btn:hover,
+.login-btn:hover {
+	background-color: #388e3c;
+}
+
+.github-link, .login-link {
+	color: white;
+	text-decoration: none;
+}
+
+.github-link:visited, .login-link:visited {
+	color: rgb(196, 195, 195);
+}
+
+.home-image{
+	display: flex;
+	gap: 20px;
+	justify-content: flex-end;
+}
+
+.home-image img {
+	width: 400px;
+	height: 700px;
+	object-fit: cover;
+	border-radius: 8px;
+}

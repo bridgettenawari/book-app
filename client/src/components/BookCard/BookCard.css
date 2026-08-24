@@ -1,0 +1,102 @@
+.book-card {
+	background-color: white;
+	padding: 16px;
+	color: #333;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	border-radius: 12px;
+	border: 1px solid #eee;
+	transition: box-shadow 0.3s ease;
+}
+
+.book-card:hover {
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.book-image {
+	width: 80%;
+	border-radius: 12px;
+	margin: 10px 0;
+}
+
+.book-title {
+	font-size: 16px;
+	font-weight: 600;
+	color: #4caf50;
+	margin: 5px 0;
+}
+
+.book-author {
+	font-size: 14px;
+	color: #555;
+}
+
+.epub-link, .purchase-link, .favorite-btn {
+  background-color: #4CAF50;
+  color: #fff;
+  border-radius: 20px;
+  padding: 8px 12px;
+  margin: 5px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+
+.epub-link:hover, .purchase-link:hover, .favorite-btn:hover {
+  background-color: #388E3C;
+}
+
+.favorite-btn.favorited {
+	background-color: #c2185b;
+}
+
+.languages-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	justify-content: center;
+	margin-top: 5px;
+	font-family: sans-serif;
+	font-size: 12px;
+	color: rgb(108, 107, 107);
+	align-items: center;
+}
+
+.language {
+	background-color: rgba(144, 142, 142, 0.493);
+	padding: 5px 10px;
+	color: white;
+	border-radius: 20px; /* pill/circle look */
+	font-family: sans-serif;
+	font-size: 12px;
+	margin: 1px;
+}
+
+.language-toggle {
+	background-color: rgba(76, 175, 80, 0.8);
+  border: none;
+	color: white;
+	cursor: pointer;
+	font-size: 12px;
+	margin-left: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.language-toggle:hover {
+	background-color: #388E3C;
+}
+
+.status-dropdown {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.status-dropdown:focus {
+  outline: none;
+  border-color: #4CAF50;
+}
