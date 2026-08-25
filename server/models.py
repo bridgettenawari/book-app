@@ -36,6 +36,9 @@ class User(db.Model):
   reading = db.relationship("Book", secondary=reading, back_populates="reading_users")
   read = db.relationship("Book", secondary=read, back_populates="read_users")
 
+  def __repr__(self):
+    return f"<User {self.id} username = {self.username}>"
+
 class Book(db.Model):
   __tablename__ = "book"
   id = db.Column(db.Integer, primary_key=True)
@@ -51,6 +54,9 @@ class Book(db.Model):
   reading_users = db.relationship("User", secondary=reading, back_populates="reading")
   read_users = db.relationship("User", secondary=read, back_populates="read")
 
+  def __repr__(self):
+    return f"<Book {self.id} title={self.title} author={self.author}>"
+
 class Note(db.Model):
   __tablename__ = "note"
   id = db.Column(db.Integer, primary_key=True)
@@ -61,6 +67,9 @@ class Note(db.Model):
 
   book = db.relationship("Book", back_populates="notes")
   user = db.relationship("User", back_populates="notes")
+
+  def __repr__(self):
+      return f"<Note {self.id} book_id={self.book_id} user_id={self.user_id}>"
 
 # Schema for validation before it is saved to the database
 class UserSchema(Schema):
