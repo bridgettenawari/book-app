@@ -77,7 +77,6 @@ function App() {
 				if (data.error) {
 					console.error(data.error);
 				} else {
-					console.error(null);
 					setFavorites(data);
 				}
 			})
@@ -91,7 +90,6 @@ function App() {
 					console.error(data.error);
 					return;
 				}
-				console.error(null);
 				if (status === "want") setWantToRead(data);
 				if (status === "reading") setReading(data);
 				if (status === "read") setRead(data);

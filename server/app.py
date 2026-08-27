@@ -17,7 +17,7 @@ app.config['SESSION_COOKIE_SAMESITE'] = 'None'
 app.config['SESSION_COOKIE_SECURE'] = True
 
 CORS(app, supports_credentials=True, origins=[
-    "https://book-app-rosy.vercel.app/",
+    "https://book-app-rosy.vercel.app",
     "http://localhost:5173"
 ])
 
@@ -32,10 +32,10 @@ migrate = Migrate(app, db)
 @app.before_request
 def check_if_logged_in():
   if request.method == "OPTIONS":
-      return None  
-  allowed = ['login', 'signup', 'home', 'check_session']
+    return None  
+  allowed = ['login', 'signup', 'logout', 'home', 'check_session']
   if not session.get('user_id') and request.endpoint not in allowed:
-        return make_response(jsonify({"error": "Access denied!"}), 401)
+    return make_response(jsonify({"error": "Access denied!"}), 401)
 
 
 # Authentication
@@ -84,7 +84,7 @@ def check_session():
     user = User.query.filter(User.id == session['user_id']).first()
     return make_response(jsonify(user_schema.dump(user)), 200)
   # Otherwise it logs you out
-  return make_response(jsonify({"error": "Not logged in!"}), 204)
+  return make_response(jsonify({"error": "Not logged in!"}), 401)
 
 @app.route('/')
 def home():
@@ -182,10 +182,12 @@ def add_favorite(book_id):
   book = Book.query.get(book_id)
   if not book:
       return make_response(jsonify({"error": "Book not found"}), 404)
-  if book not in user.favorites:
+  if book in user.favorites:
+      user.favorites.remove(book)
+  else:
       user.favorites.append(book)
       add_to_recent(user, book)
-      db.session.commit()
+  db.session.commit()
   return make_response(jsonify(BookSchema(many=True).dump(user.favorites)), 200)
 
 @app.route('/books/<int:book_id>/want', methods=['POST'])
@@ -194,10 +196,16 @@ def add_want(book_id):
     book = Book.query.get(book_id)
     if not book:
         return make_response(jsonify({"error": "Book not found"}), 404)
-    if book not in user.want_to_read:
+    if book in user.want_to_read:
+        user.want_to_read.remove(book)
+    else:
         user.want_to_read.append(book)
+        if book in user.reading:
+            user.reading.remove(book)
+        if book in user.read:
+            user.read.remove(book)
         add_to_recent(user, book)
-        db.session.commit()
+    db.session.commit()
     return make_response(jsonify(BookSchema(many=True).dump(user.want_to_read)), 200)
 
 @app.route('/books/<int:book_id>/reading', methods=['POST'])
@@ -206,10 +214,16 @@ def add_reading(book_id):
     book = Book.query.get(book_id)
     if not book:
         return make_response(jsonify({"error": "Book not found"}), 404)
-    if book not in user.reading:
+    if book in user.reading:
+        user.reading.remove(book)
+    else:
         user.reading.append(book)
+        if book in user.want_to_read:
+            user.want_to_read.remove(book)
+        if book in user.read:
+            user.read.remove(book)
         add_to_recent(user, book)
-        db.session.commit()
+    db.session.commit()
     return make_response(jsonify(BookSchema(many=True).dump(user.reading)), 200)
 
 @app.route('/books/<int:book_id>/read', methods=['POST'])
@@ -218,10 +232,16 @@ def add_read(book_id):
     book = Book.query.get(book_id)
     if not book:
         return make_response(jsonify({"error": "Book not found"}), 404)
-    if book not in user.read:
+    if book in user.read:
+        user.read.remove(book)
+    else:
         user.read.append(book)
+        if book in user.want_to_read:
+            user.want_to_read.remove(book)
+        if book in user.reading:
+            user.reading.remove(book)
         add_to_recent(user, book)
-        db.session.commit()
+    db.session.commit()
     return make_response(jsonify(BookSchema(many=True).dump(user.read)), 200)
 
 # View lists

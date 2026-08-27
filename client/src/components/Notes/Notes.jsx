@@ -13,8 +13,12 @@ function Notes({ bookId }) {
 		setLoading(true);
 		apiGet(`/books/${bookId}/notes`)
 			.then((data) => {
-				if (data.error) setError(data.error);
-				else setNotes(data);
+				if (data.error) {
+					setError(data.error);
+					setNotes([]);
+				} else {
+					setNotes(Array.isArray(data) ? data : []); // ensures it's an array
+				}
 				setLoading(false);
 			})
 			.catch((err) => {
@@ -28,10 +32,12 @@ function Notes({ bookId }) {
 		if (!newNote.trim()) return;
 		apiPost(`/books/${bookId}/notes`, { content: newNote.trim() })
 			.then((data) => {
-				if (data.error) setError(data.error);
-				else {
+				if (data.error || !data.id) {
+					setError(data.error || "Could not add note!.");
+				} else {
 					setNotes((prev) => [...prev, data]);
 					setNewNote("");
+					setError(null);
 				}
 			})
 			.catch((err) => setError(err.message));
@@ -42,8 +48,12 @@ function Notes({ bookId }) {
 		if (!updatedContent.trim()) return;
 		apiPatch(`/notes/${id}`, { content: updatedContent.trim() })
 			.then((data) => {
-				if (data.error) setError(data.error);
-				else setNotes((prev) => prev.map((n) => (n.id === id ? data : n)));
+				if (data.error || !data.id) {
+					setError(data.error || "Could not edit note!");
+				} else {
+					setNotes((prev) => prev.map((n) => (n.id === id ? data : n)));
+					setError(null);
+				}
 			})
 			.catch((err) => setError(err.message));
 	};
@@ -53,7 +63,10 @@ function Notes({ bookId }) {
 		apiDelete(`/notes/${id}`)
 			.then((data) => {
 				if (data.error) setError(data.error);
-				else setNotes((prev) => prev.filter((n) => n.id !== id));
+				else {
+					setNotes((prev) => prev.filter((n) => n.id !== id));
+					setError(null);
+				}
 			})
 			.catch((err) => setError(err.message));
 	};
@@ -69,28 +82,30 @@ function Notes({ bookId }) {
 			)}
 
 			<ul className="notes-list">
-				{notes.map((note) => (
-					<li key={note.id} className="note-item">
-						<span>{note.content}</span>
-						<div className="note-actions">
-							<button
-								className="edit-btn"
-								onClick={() => {
-									const updated = prompt("Edit note:", note.content);
-									if (updated !== null) handleEditNote(note.id, updated);
-								}}
-							>
-								✎ Edit
-							</button>
-							<button
-								className="delete-btn"
-								onClick={() => handleDeleteNote(note.id)}
-							>
-								🗑 Delete
-							</button>
-						</div>
-					</li>
-				))}
+				{notes.map((note) =>
+					note && note.id ? (
+						<li key={note.id} className="note-item">
+							<span>{note.content}</span>
+							<div className="note-actions">
+								<button
+									className="edit-btn"
+									onClick={() => {
+										const updated = prompt("Edit note:", note.content);
+										if (updated !== null) handleEditNote(note.id, updated);
+									}}
+								>
+									✎ Edit
+								</button>
+								<button
+									className="delete-btn"
+									onClick={() => handleDeleteNote(note.id)}
+								>
+									🗑 Delete
+								</button>
+							</div>
+						</li>
+					) : null,
+				)}
 			</ul>
 
 			<div className="add-note">
@@ -99,7 +114,7 @@ function Notes({ bookId }) {
 					onChange={(e) => setNewNote(e.target.value)}
 					placeholder="Write a note..."
 				/>
-				<button onClick={handleAddNote} disabled={!newNote.trim()}>
+				<button onClick={handleAddNote} disabled={!newNote.trim()}> {/*Disable button if note is empty*/}
 					+ Add Note
 				</button>
 			</div>

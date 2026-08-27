@@ -24,6 +24,7 @@ function Favorites({
 			) : (
 				<>
 					<div className="book-list">
+						{/* Show only the first 6 books */}
 						{(showAll ? books : books.slice(0, 6)).map((book) => (
 							<BookCard
 								key={book.id}

@@ -1,13 +1,12 @@
-const BASE_URL = "https://book-app-3f9e.onrender.com";
+// Can load with either local host or deployed link
+const BASE_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://book-app-3f9e.onrender.com" ||
+  "http://localhost:5555";
 
-/**
- * Wraps fetch with the base URL, JSON headers, and credentials (so the
- * Flask session cookie is sent/received). Throws on network failure;
- * callers check `res.ok` / `data.error` themselves since the Flask API
- * returns errors as JSON with non-2xx status rather than throwing.
- */
-export function apiFetch(path, options = {}) {
-  return fetch(`${BASE_URL}${path}`, {
+
+async function apiFetch(path, options = {}) {
+  const res = await fetch(`${BASE_URL}${path}`, {
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
@@ -15,26 +14,43 @@ export function apiFetch(path, options = {}) {
     },
     ...options,
   });
+
+  // Handle 204 (logout) with no body
+  if (res.status === 204) return {};
+
+  let data;
+  try {
+    data = await res.json();
+  } catch {
+    data = {};
+  }
+
+  // sends error if no error was given
+  if (!res.ok && !data.error) {
+    data.error = `Request failed with status ${res.status}`;
+  }
+
+  return data;
 }
 
 export function apiGet(path) {
-  return apiFetch(path).then((res) => res.json());
+  return apiFetch(path, { method: "GET" });
 }
 
 export function apiPost(path, body) {
   return apiFetch(path, {
     method: "POST",
     body: body ? JSON.stringify(body) : undefined,
-  }).then((res) => res.json());
+  });
 }
 
 export function apiPatch(path, body) {
   return apiFetch(path, {
     method: "PATCH",
-    body: JSON.stringify(body),
-  }).then((res) => res.json());
+    body: body ? JSON.stringify(body) : undefined,
+  });
 }
 
 export function apiDelete(path) {
-  return apiFetch(path, { method: "DELETE" }).then((res) => res.json());
+  return apiFetch(path, { method: "DELETE" });
 }

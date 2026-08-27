@@ -20,13 +20,12 @@ function Books({
 	const [page, setPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(1);
 
-	// Reset to page 1 whenever the endpoint changes (switching All/Kenya tabs)
-	// or a new search is submitted, so we don't end up on an out-of-range page.
+	// Reset to page 1 whenever the endpoint changes (switching All/Kenya tabs) or a new search is submitted
 	useEffect(() => {
 		setPage(1);
 	}, [endpoint, search]);
 
-	// Single effect drives both plain browsing and search.
+	// useEffect for browsing and search.
 	useEffect(() => {
 		setLoading(true);
 		const params = new URLSearchParams({ page, per_page: 30 });

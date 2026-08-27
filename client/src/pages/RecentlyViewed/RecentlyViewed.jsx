@@ -22,6 +22,7 @@ function RecentlyViewed({
 				if (data.error) {
 					setError(data.error);
 				} else {
+					setError(null);
 					setRecentBooks(data);
 				}
 				setLoading(false);
