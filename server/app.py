@@ -15,7 +15,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # used by the react dev server to send/receive the session cookie
 app.config['SESSION_COOKIE_SAMESITE'] = 'None'
 app.config['SESSION_COOKIE_SECURE'] = False  # set True in production (requires HTTPS)
-CORS(app, supports_credentials=True, origins=["http://localhost:5173", "http://localhost:3000", "http://localhost:5174"])
+CORS(app, supports_credentials=True, origins=["http://localhost:5173", "http://localhost:5174"])
 
 db.init_app(app)
 bcrypt = Bcrypt(app)
@@ -26,15 +26,12 @@ migrate = Migrate(app, db)
 # Checks if the user is logged in before anything else
 @app.before_request
 def check_if_logged_in():
-  allowed = ['login', 'signup', 'home', 'get_books', 'get_kenyan_books', 'get_book', 'get_notes', 'check_session']
+  if request.method == "OPTIONS":
+      return None  
+  allowed = ['login', 'signup', 'home', 'check_session']
   if not session.get('user_id') and request.endpoint not in allowed:
-    return make_response(jsonify({"error": "Access denied!"}), 401)
+        return make_response(jsonify({"error": "Access denied!"}), 401)
 
-def require_login():
-  # Returns an error response if not logged in, else returns None
-  if not session.get('user_id'):
-      return make_response(jsonify({"error": "Access denied!"}), 401)
-  return None
 
 # Authentication
 @app.route('/signup', methods=['POST'])
@@ -91,9 +88,6 @@ def home():
 # Books
 @app.route('/books', methods=['GET'])
 def get_books():
-  # err = require_login()
-  # if err:
-  #     return err
   book_schema = BookSchema(many=True)
 
   # Get query parameters
@@ -120,9 +114,6 @@ def get_books():
 
 @app.route('/books/kenya', methods=['GET'])
 def get_kenyan_books():
-  # err = require_login()
-  # if err:
-  #   return err
   book_schema = BookSchema(many=True)
 
   page = request.args.get('page', 1, type=int)
@@ -146,9 +137,6 @@ def get_kenyan_books():
 @app.route('/books/<int:book_id>', methods=['GET'])
 def get_book(book_id):
   book_schema = BookSchema()
-  # err = require_login()
-  # if err:
-  #     return err
   book = Book.query.get(book_id)
   if not book:
       return make_response(jsonify({"error": "Book not found"}), 404)
@@ -157,9 +145,6 @@ def get_book(book_id):
 # Recently viewed books
 @app.route('/recent', methods=['GET'])
 def get_recently_viewed():
-  err = require_login()
-  if err:
-    return err
   user_id = session.get('user_id')
   if not user_id:
       return make_response(jsonify({"error": "Not logged in"}), 401)
@@ -173,9 +158,6 @@ def add_to_recent(user, book):
 
 @app.route('/books/<int:book_id>/view', methods=['POST'])
 def mark_viewed(book_id):
-  err = require_login()
-  if err:
-      return err
   user = User.query.get(session['user_id'])
   book = Book.query.get(book_id)
   if not book:
@@ -191,9 +173,6 @@ def add_to_recent(user, book):
 # Add to lists
 @app.route('/books/<int:book_id>/favorite', methods=['POST'])
 def add_favorite(book_id):
-  err = require_login()
-  if err:
-    return err
   user = User.query.get(session['user_id'])
   book = Book.query.get(book_id)
   if not book:
@@ -206,9 +185,6 @@ def add_favorite(book_id):
 
 @app.route('/books/<int:book_id>/want', methods=['POST'])
 def add_want(book_id):
-    err = require_login()
-    if err:
-        return err
     user = User.query.get(session['user_id'])
     book = Book.query.get(book_id)
     if not book:
@@ -221,9 +197,6 @@ def add_want(book_id):
 
 @app.route('/books/<int:book_id>/reading', methods=['POST'])
 def add_reading(book_id):
-    err = require_login()
-    if err:
-        return err
     user = User.query.get(session['user_id'])
     book = Book.query.get(book_id)
     if not book:
@@ -236,9 +209,6 @@ def add_reading(book_id):
 
 @app.route('/books/<int:book_id>/read', methods=['POST'])
 def add_read(book_id):
-    err = require_login()
-    if err:
-        return err
     user = User.query.get(session['user_id'])
     book = Book.query.get(book_id)
     if not book:
@@ -252,51 +222,33 @@ def add_read(book_id):
 # View lists
 @app.route('/favorites', methods=['GET'])
 def get_favorites():
-    err = require_login()
-    if err:
-        return err
     user = User.query.get(session['user_id'])
     return make_response(jsonify(BookSchema(many=True).dump(user.favorites)), 200)
 
 @app.route('/want', methods=['GET'])
 def get_want():
-    err = require_login()
-    if err:
-        return err
     user = User.query.get(session['user_id'])
     return make_response(jsonify(BookSchema(many=True).dump(user.want_to_read)), 200)
 
 @app.route('/reading', methods=['GET'])
 def get_reading():
-    err = require_login()
-    if err:
-        return err
     user = User.query.get(session['user_id'])
     return make_response(jsonify(BookSchema(many=True).dump(user.reading)), 200)
 
 @app.route('/read', methods=['GET'])
 def get_read():
-    err = require_login()
-    if err:
-        return err
     user = User.query.get(session['user_id'])
     return make_response(jsonify(BookSchema(many=True).dump(user.read)), 200)
 
 # Notes
 @app.route('/books/<int:book_id>/notes', methods=['GET'])
 def get_notes(book_id):
-    # err = require_login()
-    # if err:
-    #     return err
     note_schema = NoteSchema(many=True)
     notes = Note.query.filter(Note.book_id == book_id).all()
     return make_response(jsonify(note_schema.dump(notes)), 200)
 
 @app.route('/books/<int:book_id>/notes', methods=['POST'])
 def make_note(book_id):
-  err = require_login()
-  if err:
-      return err
   note_schema = NoteSchema()
   req = request.get_json()
   try:
@@ -310,9 +262,6 @@ def make_note(book_id):
 
 @app.route('/notes/<int:id>', methods=['PATCH'])
 def edit_note(id):
-  err = require_login()
-  if err:
-      return err
   note_schema = NoteSchema()
   note = Note.query.filter(Note.id == id).first()
   if not note:
@@ -332,9 +281,6 @@ def edit_note(id):
 
 @app.route('/notes/<int:id>', methods=['DELETE'])
 def delete_note(id):
-  err = require_login()
-  if err:
-      return err
   note = Note.query.filter(Note.id == id).first()
   if not note:
     return make_response(jsonify({"error": "Note not found!"}), 404)

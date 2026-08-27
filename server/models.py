@@ -96,6 +96,7 @@ class Note(db.Model):
 class UserSchema(Schema):
   id = fields.Int(dump_only=True) # Cannot be edited by user
   username = fields.Str(required=True)
+  password = fields.Str(required=True, load_only=True) # Password should not be returned in responses
 
   notes = fields.List(fields.Nested(lambda: NoteSchema(exclude=("user",)))) # Exclude user to avoid circular references
 

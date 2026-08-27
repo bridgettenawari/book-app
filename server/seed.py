@@ -4,14 +4,14 @@ import json
 from app import app
 from models import db, User, Book, Note
 
-def fetch_books_from_openlibrary(query, limit=5, country="Global"):
+def fetch_books_from_openlibrary(query, limit=300, country="Global"):
     url = f"https://openlibrary.org/search.json?q={query}&limit={limit}"
     res = requests.get(url)
     if res.status_code == 200:
         return res.json().get("docs", [])
     return []
 
-def fetch_books_from_subject(subject="place:kenya", limit=5, country="Kenya"):
+def fetch_books_from_subject(subject="place:kenya", limit=300, country="Kenya"):
     url = f"https://openlibrary.org/subjects/{subject}.json?limit={limit}"
     res = requests.get(url)
     if res.status_code == 200:
@@ -43,7 +43,7 @@ with app.app_context():
     db.session.commit()
 
     # Fetch Global books
-    global_books_data = fetch_books_from_openlibrary("love", limit=5, country="Global")
+    global_books_data = fetch_books_from_openlibrary("love", limit=300, country="Global")
     global_books = []
     for b in global_books_data:
 
@@ -71,7 +71,7 @@ with app.app_context():
     db.session.commit()
 
     # Fetch Kenyan books
-    kenyan_books_data = fetch_books_from_subject("place:kenya", limit=5, country="Kenya")
+    kenyan_books_data = fetch_books_from_subject("place:kenya", limit=300, country="Kenya")
     kenyan_books = []
     for b in kenyan_books_data:
         authors = [a.get("name") for a in b.get("authors", []) if a.get("name")]

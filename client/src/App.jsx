@@ -19,7 +19,6 @@ function App() {
 
 	//users
 	const [user, setUser] = useState(null);
-	const [error, setError] = useState(null);
 
 	// Checks if user is logged in
 	useEffect(() => {
@@ -27,7 +26,6 @@ function App() {
 			.then((data) => {
 				if (data && data.id) {
 					setUser(data);
-					setError(null);
 				} else {
 					setUser(null);
 				}
@@ -42,11 +40,10 @@ function App() {
 	const handleLogout = () => {
 		apiDelete("/logout")
 			.then(() => {
-				setError(null);
 				setUser(null);
 				alert("Logged out!");
 			})
-			.catch((err) => setError(err.message));
+			.catch((err) => console.error(err.message));
 	};
 
 	const handleSignup = (userData) => {
@@ -62,13 +59,12 @@ function App() {
 			apiGet("/read"),
 		])
 			.then(([favoritesData, wantData, readingData, readData]) => {
-				setError(null);
 				setFavorites(Array.isArray(favoritesData) ? favoritesData : []);
 				setWantToRead(Array.isArray(wantData) ? wantData : []);
 				setReading(Array.isArray(readingData) ? readingData : []);
 				setRead(Array.isArray(readData) ? readData : []);
 			})
-			.catch((err) => setError(err.message));
+			.catch((err) => console.error(err.message));
 	};
 
 	useEffect(() => {
@@ -79,34 +75,29 @@ function App() {
 		apiPost(`/books/${book.id}/favorite`)
 			.then((data) => {
 				if (data.error) {
-					setError(data.error);
+					console.error(data.error);
 				} else {
-					setError(null);
+					console.error(null);
 					setFavorites(data);
 				}
 			})
-			.catch((err) => setError(err.message));
+			.catch((err) => console.error(err.message));
 	};
 
-	// status is one of "want" | "reading" | "read". Posting again on the
-	// same status un-sets it (see backend toggle_list) - the dropdown just
-	// reflects whichever list currently contains the book.
 	const handleStatusChange = (book, status) => {
 		apiPost(`/books/${book.id}/${status}`)
 			.then((data) => {
 				if (data.error) {
-					setError(data.error);
+					console.error(data.error);
 					return;
 				}
-				setError(null);
+				console.error(null);
 				if (status === "want") setWantToRead(data);
 				if (status === "reading") setReading(data);
 				if (status === "read") setRead(data);
-				// Re-sync all three status lists since a change to one can
-				// remove the book from another (mutual exclusivity on the backend).
 				loadLists();
 			})
-			.catch((err) => setError(err.message));
+			.catch((err) => console.error(err.message));
 	};
 
 	return (
@@ -136,13 +127,15 @@ function App() {
 								</NavLink>
 							</>
 						) : (
-							<button onClick={handleLogout} className="navlink">
-								Logout
-							</button>
+							<>
+								<button onClick={handleLogout} className="logout-btn">
+									Logout
+								</button>
+								{user && <span className="user-name">{user.username}</span>}
+							</>
 						)}
 					</nav>
 				</header>
-				{error && <div className="app-error">Error: {error}</div>}
 				<main className="main-content">
 					<Routes>
 						<Route path="/" element={<HomePage />} />
@@ -186,7 +179,10 @@ function App() {
 							}
 						/>
 						<Route path="/login" element={<Login onLogin={handleLogin} />} />
-						<Route path="/signup" element={<Signup onSignup={handleSignup} />} />
+						<Route
+							path="/signup"
+							element={<Signup onSignup={handleSignup} />}
+						/>
 					</Routes>
 				</main>
 				<footer>
