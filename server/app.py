@@ -269,7 +269,7 @@ def get_read():
 @app.route('/books/<int:book_id>/notes', methods=['GET'])
 def get_notes(book_id):
     note_schema = NoteSchema(many=True)
-    notes = Note.query.filter(Note.book_id == book_id).all()
+    notes = Note.query.filter(Note.book_id == book_id, Note.user_id == session['user_id']).all()
     return make_response(jsonify(note_schema.dump(notes)), 200)
 
 @app.route('/books/<int:book_id>/notes', methods=['POST'])
@@ -288,7 +288,7 @@ def make_note(book_id):
 @app.route('/notes/<int:id>', methods=['PATCH'])
 def edit_note(id):
   note_schema = NoteSchema()
-  note = Note.query.filter(Note.id == id).first()
+  note = Note.query.filter(Note.id == id, Note.user_id == session['user_id']).first()
   if not note:
       return make_response(jsonify({"error": "Note not found!"}), 404)
   try:
@@ -306,7 +306,7 @@ def edit_note(id):
 
 @app.route('/notes/<int:id>', methods=['DELETE'])
 def delete_note(id):
-  note = Note.query.filter(Note.id == id).first()
+  note = Note.query.filter(Note.id == id, Note.user_id == session['user_id']).first()
   if not note:
     return make_response(jsonify({"error": "Note not found!"}), 404)
   db.session.delete(note)

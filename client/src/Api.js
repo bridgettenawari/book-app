@@ -1,8 +1,6 @@
 // Can load with either local host or deployed link
-const BASE_URL =
-  import.meta.env.VITE_API_URL ||
-  "https://book-app-3f9e.onrender.com" ||
-  "http://localhost:5555";
+const BASE_URL = import.meta.env.VITE_API_URL || "https://book-app-3f9e.onrender.com";
+
 
 
 async function apiFetch(path, options = {}) {
