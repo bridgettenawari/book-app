@@ -8,7 +8,7 @@ import RecentlyViewed from "./pages/RecentlyViewed/RecentlyViewed";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import Footer from "./components/Footer/Footer";
-import { apiGet, apiPost, apiDelete } from "./Api.js";
+import { apiGet, apiPost, apiDelete, getToken, clearToken } from "./Api.js";
 
 function App() {
 	// books
@@ -20,17 +20,25 @@ function App() {
 	//users
 	const [user, setUser] = useState(null);
 
-	// Checks if user is logged in
+	// Checks if user is logged in (only worth asking if we actually have a token)
 	useEffect(() => {
+		if (!getToken()) {
+			setUser(null);
+			return;
+		}
 		apiGet("/check")
 			.then((data) => {
 				if (data && data.id) {
 					setUser(data);
 				} else {
 					setUser(null);
+					clearToken();
 				}
 			})
-			.catch(() => setUser(null));
+			.catch(() => {
+				setUser(null);
+				clearToken();
+			});
 	}, []);
 
 	const handleLogin = (userData) => {
@@ -40,6 +48,7 @@ function App() {
 	const handleLogout = () => {
 		apiDelete("/logout")
 			.then(() => {
+				clearToken();
 				setUser(null);
 				alert("Logged out!");
 			})

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { apiPost } from "../../Api.js";
+import { apiPost, setToken } from "../../Api.js";
 import "./Login.css";
 
 function Login({ onLogin }) {
@@ -14,8 +14,9 @@ function Login({ onLogin }) {
 				if (data.error) setError(data.error);
 				else {
 					setError(null);
+					setToken(data.access_token); // store JWT for future requests
 					alert("Login successful!");
-					onLogin(data); // persist user data
+					onLogin(data.user); // persist user data
 				}
 			})
 			.catch((err) => setError(err.message));

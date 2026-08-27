@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { apiPost } from "../../Api.js"; 
+import { apiPost, setToken } from "../../Api.js";
 import "./Signup.css";
 
-function Signup() {
+function Signup({ onSignup }) {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState(null);
@@ -14,7 +14,9 @@ function Signup() {
 				if (data.error) setError(data.error);
 				else {
 					setError(null);
+					setToken(data.access_token); // store JWT for future requests
 					alert("Signup successful!");
+					if (onSignup) onSignup(data.user);
 				}
 			})
 			.catch((err) => setError(err.message));
