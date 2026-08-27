@@ -100,7 +100,7 @@ function Notes({ bookId }) {
 					placeholder="Write a note..."
 				/>
 				<button onClick={handleAddNote} disabled={!newNote.trim()}>
-					➕ Add Note
+					+ Add Note
 				</button>
 			</div>
 		</div>

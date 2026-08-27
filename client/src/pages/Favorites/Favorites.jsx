@@ -53,15 +53,15 @@ function Favorites({
 	return (
 		<div className="favorites-page">
 			{renderSection(
-				"Favorites",
+				" ★ Favorites",
 				favorites,
 				showAllFavorites,
 				setShowAllFavorites,
 			)}
-			{renderSection("Want to Read", wantToRead, showAllWant, setShowAllWant)}
-			{renderSection("Read", read, showAllRead, setShowAllRead)}
+			{renderSection("⏱ Want to Read", wantToRead, showAllWant, setShowAllWant)}
+			{renderSection("✓ Read", read, showAllRead, setShowAllRead)}
 			{renderSection(
-				"Currently Reading",
+				"⌛︎ Currently Reading",
 				reading,
 				showAllReading,
 				setShowAllReading,

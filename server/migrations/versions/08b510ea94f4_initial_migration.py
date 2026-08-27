@@ -1,8 +1,8 @@
 """Initial migration
 
-Revision ID: e0375fa12895
+Revision ID: 08b510ea94f4
 Revises: 
-Create Date: 2026-08-27 14:15:13.679404
+Create Date: 2026-08-27 18:16:10.137489
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'e0375fa12895'
+revision = '08b510ea94f4'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -26,13 +26,14 @@ def upgrade():
     sa.Column('epub_link', sa.String(length=1000), nullable=True),
     sa.Column('cover_i', sa.String(length=200), nullable=True),
     sa.Column('series_position', sa.String(length=50), nullable=True),
-    sa.Column('series_name', sa.String(length=200), nullable=True),
+    sa.Column('series_name', sa.Text(), nullable=True),
     sa.Column('first_publish_year', sa.Integer(), nullable=True),
-    sa.Column('author_name', sa.JSON(), nullable=True),
-    sa.Column('ebook_access', sa.String(length=50), nullable=True),
-    sa.Column('ia', sa.JSON(), nullable=True),
-    sa.Column('isbn', sa.JSON(), nullable=True),
-    sa.Column('language', sa.JSON(), nullable=True),
+    sa.Column('author_name', sa.Text(), nullable=True),
+    sa.Column('ebook_access', sa.String(length=200), nullable=True),
+    sa.Column('ia', sa.Text(), nullable=True),
+    sa.Column('isbn', sa.Text(), nullable=True),
+    sa.Column('language', sa.Text(), nullable=True),
+    sa.Column('key', sa.String(length=200), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('user',

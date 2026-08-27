@@ -49,36 +49,26 @@ function BookCard({
 					: book.author || "Author unknown"}
 			</h4>
 
-			{(book.ebook_access === "public" || book.ebook_access === "borrowable") &&
-				book.ia && (
-					<a
-						href={`https://archive.org/details/${book.ia[0]}`}
-						target="_blank"
-						rel="noopener noreferrer"
-						className="epub-link"
-					>
-						📓 EPUB
-					</a>
-				)}
-
-			{book.isbn && book.isbn.length > 0 ? (
+			{book.epub_link && (
 				<a
-					href={`https://www.amazon.com/s?k=${book.isbn[0]}`}
+					href={book.epub_link}
 					target="_blank"
-					rel="noopener noreferrer"
+					className="epub-link"
+				>
+					EPUB
+				</a>
+			)}
+
+			{book.key ? (
+				<a
+					href={`https://openlibrary.org${book.key}`}
+					target="_blank"
 					className="purchase-link"
 				>
-					🛒 Purchase
+					Open Library
 				</a>
 			) : (
-				<a
-					href={`https://openlibrary.org${book.key || ""}`}
-					target="_blank"
-					rel="noopener noreferrer"
-					className="purchase-link"
-				>
-					📖 Open Library
-				</a>
+				<div className="purchase-link">No Open Library link</div>
 			)}
 
 			{languages.length > 0 ? (
@@ -121,7 +111,7 @@ function BookCard({
 				<div className="languages-container">No language indicated</div>
 			)}
 
-			{/* ✅ Notes component for CRUD on notes */}
+			{/* NOTES*/}
 			<Notes bookId={book.id} />
 
 			<div className="book-actions">
@@ -133,9 +123,9 @@ function BookCard({
 					<option value="" disabled>
 						Set status...
 					</option>
-					<option value="want">Want to Read</option>
-					<option value="reading">Currently Reading</option>
-					<option value="read">Read</option>
+					<option value="want">⏱ Want to Read</option>
+					<option value="reading">⌛︎ Currently Reading</option>
+					<option value="read">✓ Read</option>
 				</select>
 
 				<button

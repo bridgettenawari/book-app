@@ -124,7 +124,7 @@ function App() {
 							✩ Favorites
 						</NavLink>
 						<NavLink to="/recent" className="navlink">
-							Recently viewed
+							🕰 Recently viewed
 						</NavLink>
 						{!user ? (
 							<>

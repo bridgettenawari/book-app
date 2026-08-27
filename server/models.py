@@ -1,5 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow import Schema, fields
+from sqlalchemy.dialects.sqlite import JSON
+import json
 
 db = SQLAlchemy()
 
@@ -55,13 +57,14 @@ class Book(db.Model):
   epub_link = db.Column(db.String(1000))
   cover_i = db.Column(db.String(200))
   series_position = db.Column(db.String(50))
-  series_name = db.Column(db.String(200))
+  series_name = db.Column(db.Text)
   first_publish_year = db.Column(db.Integer)
-  author_name = db.Column(db.JSON)
-  ebook_access = db.Column(db.String(50))
-  ia = db.Column(db.JSON)
-  isbn = db.Column(db.JSON)
-  language = db.Column(db.JSON)      
+  author_name = db.Column(db.Text)
+  ebook_access = db.Column(db.String(200))
+  ia = db.Column(db.Text)
+  isbn = db.Column(db.Text)
+  language = db.Column(db.Text)
+  key = db.Column(db.String(200))   
 
   notes = db.relationship("Note", back_populates="book")
 
@@ -109,13 +112,13 @@ class BookSchema(Schema):
   epub_link = fields.Str()
   cover_i = fields.Str()
   series_position = fields.Str()
-  series_name = fields.Str()
+  series_name = fields.Method("get_series_name")
   first_publish_year = fields.Int()
-  author_name = fields.List(fields.Str())
+  author_name = fields.Method("get_author_name")
   ebook_access = fields.Str()
-  ia = fields.List(fields.Str())
-  isbn = fields.List(fields.Str())
-  language = fields.List(fields.Str())
+  ia = fields.Method("get_ia")
+  isbn = fields.Method("get_isbn")
+  language = fields.Method("get_language")
 
   notes = fields.List(fields.Nested(lambda: NoteSchema(exclude=("book",))))
 
@@ -123,6 +126,21 @@ class BookSchema(Schema):
   want_users = fields.List(fields.Nested(lambda: UserSchema(only=("id", "username"))))
   reading_users = fields.List(fields.Nested(lambda: UserSchema(only=("id", "username"))))
   read_users = fields.List(fields.Nested(lambda: UserSchema(only=("id", "username"))))
+
+  def get_series_name(self, obj):
+      return json.loads(obj.series_name) if obj.series_name else None
+
+  def get_author_name(self, obj):
+      return json.loads(obj.author_name) if obj.author_name else None
+
+  def get_ia(self, obj):
+      return json.loads(obj.ia) if obj.ia else None
+
+  def get_isbn(self, obj):
+      return json.loads(obj.isbn) if obj.isbn else None
+
+  def get_language(self, obj):
+      return json.loads(obj.language) if obj.language else None
 
 class NoteSchema(Schema):
   id = fields.Int(dump_only=True)

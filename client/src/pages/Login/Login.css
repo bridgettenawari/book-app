@@ -1,19 +1,39 @@
-.bar {
-  background-color: white;
-  border-bottom: 1px solid #ddd;
-  padding: 10px 20px;
-  display: flex;
+.login{
+  background-color: #f5f5f5;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 20px;
   align-items: center;
-  justify-content: space-between;
 }
 
-.title {
-  font-family: "Mea Culpa", sans-serif;
-  font-size: 36px;
-  color: #4CAF50;
+.login-title{
+  font-size: 30px;
+  font-family: sans-serif;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #388e3c;
 }
 
-.label {
+.username-cont{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.password-cont{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.login-btn-cont{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.label{
   font-size: 16px;
   margin-right: 8px;
   font-family: sans-serif;
@@ -21,18 +41,21 @@
 }
 
 .input {
-  padding: 8px 12px;
+  padding: 8px 30px;
+  margin-bottom: 10px;
+  border: 1px solid rgb(196, 190, 190);
   border-radius: 20px;
-  border: 1px solid #ccc;
-  outline: none;
 }
 
-.search-btn{
-  border: 1px solid white;
-  color: white;
-  background-color: #4CAF50;
-  padding: 4px 10px;
-  margin: 2px;
-  border-radius: 20px;
-  font-size: 20px;
+.login-btn {
+	background-color: #4caf50;
+	color: white;
+	border: none;
+	padding: 12px 20px;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: all;
+}
+.login-btn:hover {
+	background-color: #388e3c;
 }

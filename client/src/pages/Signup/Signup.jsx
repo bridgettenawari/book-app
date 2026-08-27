@@ -22,24 +22,40 @@ function Signup() {
 
 	return (
 		<div className="signup">
-			<h2>Signup</h2>
+			<h2 className="signup-title">Signup</h2>
 			{error && <div className="error">{error}</div>}
 			<form onSubmit={handleSignup}>
-				<input
-					type="text"
-					placeholder="Username"
-					value={username}
-					onChange={(e) => setUsername(e.target.value)}
-					required
-				/>
-				<input
-					type="password"
-					placeholder="Password"
-					value={password}
-					onChange={(e) => setPassword(e.target.value)}
-					required
-				/>
-				<button type="submit">Signup</button>
+				<div className="username-cont">
+					<label className="label" htmlFor="username">
+						Username:
+					</label>
+					<input
+						className="input"
+						type="text"
+						placeholder="Username"
+						value={username}
+						onChange={(e) => setUsername(e.target.value)}
+						required
+					/>
+				</div>
+				<div className="password-cont">
+					<label className="label" htmlFor="password">
+						Password:
+					</label>
+					<input
+						className="input"
+						type="password"
+						placeholder="Password"
+						value={password}
+						onChange={(e) => setPassword(e.target.value)}
+						required
+					/>
+				</div>
+				<div className="signup-btn-cont">
+					<button className="signup-btn" type="submit">
+						Signup
+					</button>
+				</div>
 			</form>
 		</div>
 	);

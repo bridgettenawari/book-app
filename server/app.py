@@ -12,10 +12,10 @@ app.secret_key = 'fake_secret_key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Needed so the React dev server can send/receive the session cookie
+# used by the react dev server to send/receive the session cookie
 app.config['SESSION_COOKIE_SAMESITE'] = 'None'
 app.config['SESSION_COOKIE_SECURE'] = False  # set True in production (requires HTTPS)
-CORS(app, supports_credentials=True, origins=["http://localhost:5173", "http://localhost:3000"])
+CORS(app, supports_credentials=True, origins=["http://localhost:5173", "http://localhost:3000", "http://localhost:5174"])
 
 db.init_app(app)
 bcrypt = Bcrypt(app)
@@ -23,10 +23,10 @@ jwt = JWTManager(app)
 migrate = Migrate(app, db)
 
 
-# Checks if the user is logged in before any request is fetched
+# Checks if the user is logged in before anything else
 @app.before_request
 def check_if_logged_in():
-  allowed = ['login', 'signup', 'home', 'get_books', 'get_kenyan_books', 'get_book', 'get_notes']
+  allowed = ['login', 'signup', 'home', 'get_books', 'get_kenyan_books', 'get_book', 'get_notes', 'check_session']
   if not session.get('user_id') and request.endpoint not in allowed:
     return make_response(jsonify({"error": "Access denied!"}), 401)
 
@@ -82,7 +82,7 @@ def check_session():
     user = User.query.filter(User.id == session['user_id']).first()
     return make_response(jsonify(user_schema.dump(user)), 200)
   # Otherwise it logs you out
-  return make_response(jsonify({}, 204))
+  return make_response(jsonify({"error": "Not logged in!"}), 204)
 
 @app.route('/')
 def home():
@@ -308,7 +308,7 @@ def make_note(book_id):
   db.session.commit()
   return make_response(jsonify(note_schema.dump(new_note)), 201)
 
-@app.route('/notes/<int:id>')
+@app.route('/notes/<int:id>', methods=['PATCH'])
 def edit_note(id):
   err = require_login()
   if err:
@@ -326,7 +326,7 @@ def edit_note(id):
   # Get the key value pairs from the data received and change the value of the selected note
   for key,value in data.items():
     setattr(note, key, value)
-  db.session.add(note)
+  # db.session.add(note)
   db.session.commit()
   return make_response(jsonify(note_schema.dump(note)), 200)
 

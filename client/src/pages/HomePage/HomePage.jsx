@@ -21,7 +21,7 @@ function HomePage() {
 						</button>
 						<button className="login-btn">
 							<Link className="login-link" to="/login">
-								Button
+								Login
 							</Link>
 						</button>
 					</div>
