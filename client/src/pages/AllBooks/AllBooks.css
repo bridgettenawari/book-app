@@ -1,0 +1,26 @@
+.books-wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+}
+
+.books-tabs {
+	display: flex;
+	gap: 1rem;
+	border-bottom: 1px solid #e2e2e2;
+	padding-bottom: 0.5rem;
+}
+
+.tab-link {
+	padding: 0.5rem 1rem;
+	text-decoration: none;
+	color: #555;
+	font-weight: 500;
+	border-radius: 6px 6px 0 0;
+}
+
+.tab-link.active {
+	color: #1a1a1a;
+	background: #f0eee6;
+	font-weight: 700;
+}

@@ -1,0 +1,61 @@
+.books {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+}
+
+.search-bar {
+	display: flex;
+	gap: 0.5rem;
+}
+
+.search-bar input {
+	flex: 1;
+	padding: 0.6rem 0.9rem;
+	border: 1px solid #d8d5cb;
+	border-radius: 8px;
+	font-size: 1rem;
+}
+
+.search-bar button {
+	padding: 0.6rem 1.1rem;
+	border: none;
+	border-radius: 8px;
+	background: #1a1a1a;
+	color: #fff;
+	cursor: pointer;
+	font-weight: 600;
+}
+
+.search-bar .clear-search-btn {
+	background: #e2e2e2;
+	color: #333;
+}
+
+.pagination-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 1rem;
+}
+
+.prev-page-btn,
+.next-page-btn {
+	padding: 0.5rem 1rem;
+	border: 1px solid #d8d5cb;
+	border-radius: 8px;
+	background: #fff;
+	cursor: pointer;
+	font-size: 1.1rem;
+}
+
+.prev-page-btn:disabled,
+.next-page-btn:disabled {
+	opacity: 0.4;
+	cursor: not-allowed;
+}
+
+.page-indicator {
+	font-weight: 600;
+	color: #444;
+}

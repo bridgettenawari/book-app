@@ -24,6 +24,12 @@ read = db.Table("read",
     db.Column("book_id", db.Integer, db.ForeignKey("book.id"), primary_key=True)
 )
 
+recently_viewed = db.Table("recently_viewed",
+    db.Column("user_id", db.Integer, db.ForeignKey("user.id"), primary_key=True),
+    db.Column("book_id", db.Integer, db.ForeignKey("book.id"), primary_key=True),
+    db.Column("timestamp", db.DateTime, server_default=db.func.now())
+)
+
 class User(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   username = db.Column(db.String(80), unique=True, nullable=False)
@@ -35,6 +41,7 @@ class User(db.Model):
   want_to_read = db.relationship("Book", secondary=want_to_read, back_populates="want_users")
   reading = db.relationship("Book", secondary=reading, back_populates="reading_users")
   read = db.relationship("Book", secondary=read, back_populates="read_users")
+  recently_viewed = db.relationship("Book", secondary=recently_viewed, back_populates="viewed_users")
 
   def __repr__(self):
     return f"<User {self.id} username = {self.username}>"
@@ -45,6 +52,16 @@ class Book(db.Model):
   title = db.Column(db.String(200), nullable=False)
   author = db.Column(db.String(200))
   country = db.Column(db.String(100))
+  epub_link = db.Column(db.String(1000))
+  cover_i = db.Column(db.String(200))
+  series_position = db.Column(db.String(50))
+  series_name = db.Column(db.String(200))
+  first_publish_year = db.Column(db.Integer)
+  author_name = db.Column(db.JSON)
+  ebook_access = db.Column(db.String(50))
+  ia = db.Column(db.JSON)
+  isbn = db.Column(db.JSON)
+  language = db.Column(db.JSON)      
 
   notes = db.relationship("Note", back_populates="book")
 
@@ -53,6 +70,7 @@ class Book(db.Model):
   want_users = db.relationship("User", secondary=want_to_read, back_populates="want_to_read")
   reading_users = db.relationship("User", secondary=reading, back_populates="reading")
   read_users = db.relationship("User", secondary=read, back_populates="read")
+  viewed_users = db.relationship("User", secondary=recently_viewed, back_populates="recently_viewed")
 
   def __repr__(self):
     return f"<Book {self.id} title={self.title} author={self.author}>"
@@ -88,6 +106,16 @@ class BookSchema(Schema):
   title = fields.Str(required=True)
   author = fields.Str()
   country = fields.Str()
+  epub_link = fields.Str()
+  cover_i = fields.Str()
+  series_position = fields.Str()
+  series_name = fields.Str()
+  first_publish_year = fields.Int()
+  author_name = fields.List(fields.Str())
+  ebook_access = fields.Str()
+  ia = fields.List(fields.Str())
+  isbn = fields.List(fields.Str())
+  language = fields.List(fields.Str())
 
   notes = fields.List(fields.Nested(lambda: NoteSchema(exclude=("book",))))
 

@@ -1,0 +1,9 @@
+.recent-page h2 {
+	margin-bottom: 1rem;
+}
+
+.recent-page .book-list {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+	gap: 1.5rem;
+}

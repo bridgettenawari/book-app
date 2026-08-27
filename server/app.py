@@ -4,6 +4,7 @@ from flask_jwt_extended import JWTManager
 from flask_bcrypt import Bcrypt
 from models import *
 from marshmallow import ValidationError
+from flask_cors import CORS
 
 app = Flask(__name__)
 app.config['JWT_SECRET_KEY'] = 'fake_secret_key'
@@ -11,26 +12,34 @@ app.secret_key = 'fake_secret_key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+# Needed so the React dev server can send/receive the session cookie
+app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+app.config['SESSION_COOKIE_SECURE'] = False  # set True in production (requires HTTPS)
+CORS(app, supports_credentials=True, origins=["http://localhost:5173", "http://localhost:3000"])
+
 db.init_app(app)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 migrate = Migrate(app, db)
 
-# Schemas
-user_schema = UserSchema()
-book_schema = BookSchema()
-note_schema = NoteSchema()
 
 # Checks if the user is logged in before any request is fetched
 @app.before_request
 def check_if_logged_in():
-  allowed = ['login', 'signup']
+  allowed = ['login', 'signup', 'home', 'get_books', 'get_kenyan_books', 'get_book', 'get_notes']
   if not session.get('user_id') and request.endpoint not in allowed:
     return make_response(jsonify({"error": "Access denied!"}), 401)
+
+def require_login():
+  # Returns an error response if not logged in, else returns None
+  if not session.get('user_id'):
+      return make_response(jsonify({"error": "Access denied!"}), 401)
+  return None
 
 # Authentication
 @app.route('/signup', methods=['POST'])
 def signup():
+  user_schema = UserSchema()
   req = request.get_json()
   try:
     data = user_schema.load(req) # validates and deserializes the data received from the user
@@ -42,10 +51,12 @@ def signup():
   user = User(username=data['username'], password=encrypted)
   db.session.add(user) # add user to database
   db.session.commit()
+  session['user_id'] = user.id
   return make_response(jsonify(user_schema.dump(user)), 201) # Sends the users data to the frontend after serializing
 
 @app.route('/login', methods=['POST'])
 def login():
+  user_schema = UserSchema()
   req = request.get_json()
   username = req.get('username')
   password = req.get('password')
@@ -60,11 +71,12 @@ def login():
 
 @app.route('/logout', methods=['DELETE'])
 def logout():
-  session['user_id'] = None
+  session.pop('user_id', None)
   return make_response({}, 204)
 
 @app.route('/check', methods=['GET'])
 def check_session():
+  user_schema = UserSchema()
   if session.get('user_id'):
     # Checks if the user id saved in the session is the same as the user id and if it is, it stays logged in
     user = User.query.filter(User.id == session['user_id']).first()
@@ -72,31 +84,225 @@ def check_session():
   # Otherwise it logs you out
   return make_response(jsonify({}, 204))
 
+@app.route('/')
+def home():
+  return "Welcome!"
+
 # Books
 @app.route('/books', methods=['GET'])
 def get_books():
-  books = Book.query.all()
-  return make_response(jsonify(book_schema.dump(books)), 200)
+  # err = require_login()
+  # if err:
+  #     return err
+  book_schema = BookSchema(many=True)
+
+  # Get query parameters
+  page = request.args.get('page', 1, type=int)
+  per_page = request.args.get('per_page', 30, type=int)
+
+  search = request.args.get('q', None, type=str)
+  query = Book.query
+  if search:
+    query = query.filter(Book.title.ilike(f"%{search}%"))
+
+  # Paginate the query
+  pagination = Book.query.paginate(page=page, per_page=per_page, error_out=False)
+
+  # Return paginated results + metadata
+  return make_response(jsonify({
+      "page": pagination.page,
+      "per_page": pagination.per_page,
+      "total": pagination.total,
+      "total_pages": pagination.pages,
+      "books": book_schema.dump(pagination.items)
+  }), 200)
+
 
 @app.route('/books/kenya', methods=['GET'])
 def get_kenyan_books():
-    schema = BookSchema(many=True)
-    books = Book.query.filter_by(country="Kenya").all()
-    return make_response(jsonify(schema.dump(books)), 200)
+  # err = require_login()
+  # if err:
+  #   return err
+  book_schema = BookSchema(many=True)
+
+  page = request.args.get('page', 1, type=int)
+  per_page = request.args.get('per_page', 30, type=int)
+
+  search = request.args.get('q', None, type=str)
+  query = Book.query.filter_by(country="Kenya")
+  if search:
+      query = query.filter(Book.title.ilike(f"%{search}%"))
+
+  pagination = query.paginate(page=page, per_page=per_page, error_out=False)
+
+  return make_response(jsonify({
+      "page": pagination.page,
+      "per_page": pagination.per_page,
+      "total": pagination.total,
+      "total_pages": pagination.pages,
+      "books": book_schema.dump(pagination.items)
+  }), 200)
+
+@app.route('/books/<int:book_id>', methods=['GET'])
+def get_book(book_id):
+  book_schema = BookSchema()
+  # err = require_login()
+  # if err:
+  #     return err
+  book = Book.query.get(book_id)
+  if not book:
+      return make_response(jsonify({"error": "Book not found"}), 404)
+  return make_response(jsonify(book_schema.dump(book)), 200)
+
+# Recently viewed books
+@app.route('/recent', methods=['GET'])
+def get_recently_viewed():
+  err = require_login()
+  if err:
+    return err
+  user_id = session.get('user_id')
+  if not user_id:
+      return make_response(jsonify({"error": "Not logged in"}), 401)
+  user = User.query.get(user_id)
+  book_schema = BookSchema(many=True)
+  return make_response(jsonify(book_schema.dump(user.recently_viewed)), 200)
+
+def add_to_recent(user, book):
+    if book not in user.recently_viewed:
+        user.recently_viewed.append(book)
+
+@app.route('/books/<int:book_id>/view', methods=['POST'])
+def mark_viewed(book_id):
+  err = require_login()
+  if err:
+      return err
+  user = User.query.get(session['user_id'])
+  book = Book.query.get(book_id)
+  if not book:
+      return make_response(jsonify({"error": "Book not found"}), 404)
+  add_to_recent(user, book)
+  db.session.commit()
+  return make_response(jsonify(BookSchema(many=True).dump(user.recently_viewed)), 200)
+
+def add_to_recent(user, book):
+  if book not in user.recently_viewed:
+      user.recently_viewed.append(book)
+
+# Add to lists
+@app.route('/books/<int:book_id>/favorite', methods=['POST'])
+def add_favorite(book_id):
+  err = require_login()
+  if err:
+    return err
+  user = User.query.get(session['user_id'])
+  book = Book.query.get(book_id)
+  if not book:
+      return make_response(jsonify({"error": "Book not found"}), 404)
+  if book not in user.favorites:
+      user.favorites.append(book)
+      add_to_recent(user, book)
+      db.session.commit()
+  return make_response(jsonify(BookSchema(many=True).dump(user.favorites)), 200)
+
+@app.route('/books/<int:book_id>/want', methods=['POST'])
+def add_want(book_id):
+    err = require_login()
+    if err:
+        return err
+    user = User.query.get(session['user_id'])
+    book = Book.query.get(book_id)
+    if not book:
+        return make_response(jsonify({"error": "Book not found"}), 404)
+    if book not in user.want_to_read:
+        user.want_to_read.append(book)
+        add_to_recent(user, book)
+        db.session.commit()
+    return make_response(jsonify(BookSchema(many=True).dump(user.want_to_read)), 200)
+
+@app.route('/books/<int:book_id>/reading', methods=['POST'])
+def add_reading(book_id):
+    err = require_login()
+    if err:
+        return err
+    user = User.query.get(session['user_id'])
+    book = Book.query.get(book_id)
+    if not book:
+        return make_response(jsonify({"error": "Book not found"}), 404)
+    if book not in user.reading:
+        user.reading.append(book)
+        add_to_recent(user, book)
+        db.session.commit()
+    return make_response(jsonify(BookSchema(many=True).dump(user.reading)), 200)
+
+@app.route('/books/<int:book_id>/read', methods=['POST'])
+def add_read(book_id):
+    err = require_login()
+    if err:
+        return err
+    user = User.query.get(session['user_id'])
+    book = Book.query.get(book_id)
+    if not book:
+        return make_response(jsonify({"error": "Book not found"}), 404)
+    if book not in user.read:
+        user.read.append(book)
+        add_to_recent(user, book)
+        db.session.commit()
+    return make_response(jsonify(BookSchema(many=True).dump(user.read)), 200)
+
+# View lists
+@app.route('/favorites', methods=['GET'])
+def get_favorites():
+    err = require_login()
+    if err:
+        return err
+    user = User.query.get(session['user_id'])
+    return make_response(jsonify(BookSchema(many=True).dump(user.favorites)), 200)
+
+@app.route('/want', methods=['GET'])
+def get_want():
+    err = require_login()
+    if err:
+        return err
+    user = User.query.get(session['user_id'])
+    return make_response(jsonify(BookSchema(many=True).dump(user.want_to_read)), 200)
+
+@app.route('/reading', methods=['GET'])
+def get_reading():
+    err = require_login()
+    if err:
+        return err
+    user = User.query.get(session['user_id'])
+    return make_response(jsonify(BookSchema(many=True).dump(user.reading)), 200)
+
+@app.route('/read', methods=['GET'])
+def get_read():
+    err = require_login()
+    if err:
+        return err
+    user = User.query.get(session['user_id'])
+    return make_response(jsonify(BookSchema(many=True).dump(user.read)), 200)
 
 # Notes
-@app.route('books/<int:book_id>/notes', methods=['GET'])
+@app.route('/books/<int:book_id>/notes', methods=['GET'])
 def get_notes(book_id):
-  notes = Note.query.filter(Note.book_id == book_id).all()
-  return make_response(jsonify(note_schema.dump(notes)), 200)
+    # err = require_login()
+    # if err:
+    #     return err
+    note_schema = NoteSchema(many=True)
+    notes = Note.query.filter(Note.book_id == book_id).all()
+    return make_response(jsonify(note_schema.dump(notes)), 200)
 
 @app.route('/books/<int:book_id>/notes', methods=['POST'])
 def make_note(book_id):
+  err = require_login()
+  if err:
+      return err
+  note_schema = NoteSchema()
   req = request.get_json()
   try:
-    data = note_schema.load(req)
+      data = note_schema.load(req)
   except ValidationError as err:
-    return make_response(jsonify({"error": err.messages}), 400)
+      return make_response(jsonify({"error": err.messages}), 400)
   new_note = Note(content=data['content'], book_id=book_id, user_id=session['user_id'])
   db.session.add(new_note)
   db.session.commit()
@@ -104,9 +310,13 @@ def make_note(book_id):
 
 @app.route('/notes/<int:id>')
 def edit_note(id):
+  err = require_login()
+  if err:
+      return err
+  note_schema = NoteSchema()
   note = Note.query.filter(Note.id == id).first()
   if not note:
-    return make_response(jsonify({"error": "Note not found!"}), 404)
+      return make_response(jsonify({"error": "Note not found!"}), 404)
   try:
     req = request.get_json()
     data = note_schema.load(req, partial=True)
@@ -122,6 +332,9 @@ def edit_note(id):
 
 @app.route('/notes/<int:id>', methods=['DELETE'])
 def delete_note(id):
+  err = require_login()
+  if err:
+      return err
   note = Note.query.filter(Note.id == id).first()
   if not note:
     return make_response(jsonify({"error": "Note not found!"}), 404)
