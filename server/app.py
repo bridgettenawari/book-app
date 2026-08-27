@@ -16,9 +16,10 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SESSION_COOKIE_SAMESITE'] = 'None'
 app.config['SESSION_COOKIE_SECURE'] = False  # set True in production (requires HTTPS)
 CORS(app, supports_credentials=True, origins=[
-    "https://your-frontend.vercel.app",
+    "https://book-app-3f9e.onrender.com/",
     "http://localhost:5173"
 ])
+
 
 db.init_app(app)
 bcrypt = Bcrypt(app)
