@@ -17,7 +17,7 @@ app.config['SESSION_COOKIE_SAMESITE'] = 'None'
 app.config['SESSION_COOKIE_SECURE'] = True
 
 CORS(app, supports_credentials=True, origins=[
-    "https://loco-for-literature.vercel.app/",
+    "https://book-app-rosy.vercel.app/",
     "http://localhost:5173"
 ])
 
