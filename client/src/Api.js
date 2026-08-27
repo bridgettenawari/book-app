@@ -1,15 +1,44 @@
 // Can load with either local host or deployed link
 const BASE_URL = import.meta.env.VITE_API_URL || "https://book-app-3f9e.onrender.com";
 
+const TOKEN_KEY = "access_token";
 
+// Keep the token in memory for fast access, but persist it to localStorage
+// so a page refresh doesn't log the user out.
+let token = localStorage.getItem(TOKEN_KEY) || null;
+
+export function setToken(newToken) {
+  token = newToken;
+  if (newToken) {
+    localStorage.setItem(TOKEN_KEY, newToken);
+  } else {
+    localStorage.removeItem(TOKEN_KEY);
+  }
+}
+
+export function getToken() {
+  return token;
+}
+
+export function clearToken() {
+  setToken(null);
+}
 
 async function apiFetch(path, options = {}) {
+  const headers = {
+    "Content-Type": "application/json",
+    ...(options.headers || {}),
+  };
+
+  // Cross-site cookies get blocked by browsers (Safari/Firefox/Chrome all
+  // restrict third-party cookies), so auth is carried via this header
+  // instead of a session cookie.
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
   const res = await fetch(`${BASE_URL}${path}`, {
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-      ...(options.headers || {}),
-    },
+    headers,
     ...options,
   });
 
