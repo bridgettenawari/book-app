@@ -1,7 +1,7 @@
 import { useState } from "react";
 import BookCard from "../../components/BookCard/BookCard.jsx";
 import "./Favorites.css";
-import '../../components/BookList/BookList.css'
+import "../../components/BookList/BookList.css";
 
 function Favorites({
 	favorites = [],
@@ -26,7 +26,7 @@ function Favorites({
 					<div className="book-list">
 						{(showAll ? books : books.slice(0, 6)).map((book) => (
 							<BookCard
-								key={book.key}
+								key={book.id}
 								book={book}
 								onFavorite={onFavorite}
 								onStatusChange={onStatusChange}
@@ -58,12 +58,7 @@ function Favorites({
 				showAllFavorites,
 				setShowAllFavorites,
 			)}
-			{renderSection(
-				"Want to Read",
-				wantToRead,
-				showAllWant,
-				setShowAllWant,
-			)}
+			{renderSection("Want to Read", wantToRead, showAllWant, setShowAllWant)}
 			{renderSection("Read", read, showAllRead, setShowAllRead)}
 			{renderSection(
 				"Currently Reading",

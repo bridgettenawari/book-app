@@ -1,4 +1,5 @@
 import "./BookCard.css";
+import Notes from "../Notes/Notes";
 import { useState } from "react";
 
 function BookCard({
@@ -15,17 +16,19 @@ function BookCard({
 	const cover = book.cover_i
 		? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`
 		: "https://via.placeholder.com/150";
-	const isFavorite = favorites.some((fav) => fav.key === book.key);
+
+	// ✅ Match on book.id (your DB primary key), not Open Library's `key`
+	const isFavorite = favorites.some((fav) => fav.id === book.id);
 
 	let currentStatus = "";
-	if (wantToRead.some((wtr) => wtr.key === book.key)) currentStatus = "want";
-	else if (read.some((rd) => rd.key === book.key)) currentStatus = "read";
-	else if (reading.some((r) => r.key === book.key)) currentStatus = "reading";
-	else currentStatus = "want";
+	if (wantToRead.some((b) => b.id === book.id)) currentStatus = "want";
+	else if (reading.some((b) => b.id === book.id)) currentStatus = "reading";
+	else if (read.some((b) => b.id === book.id)) currentStatus = "read";
+	// leave "" so dropdown shows placeholder if no status
 
 	const languages = book.language || [];
-	const mainLanguages = languages.slice(0, 3); // Only shows the first three languages
-	const extraLanguages = languages.slice(3); // Starts from the index that was cut off
+	const mainLanguages = languages.slice(0, 3);
+	const extraLanguages = languages.slice(3);
 
 	return (
 		<div className="book-card">
@@ -41,9 +44,11 @@ function BookCard({
 			<h3 className="book-title">{book.title}</h3>
 			<p className="publishing-year">{book.first_publish_year}</p>
 			<h4 className="book-author">
-				{book.author_name ? book.author_name[0] : "Author unknown"}
+				{book.author_name
+					? book.author_name[0]
+					: book.author || "Author unknown"}
 			</h4>
-			{/* If the ebook access is public or borrowable, open the ebook page */}
+
 			{(book.ebook_access === "public" || book.ebook_access === "borrowable") &&
 				book.ia && (
 					<a
@@ -55,7 +60,7 @@ function BookCard({
 						📓 EPUB
 					</a>
 				)}
-			{/* If there's an isbn on amazon, show the link but if not open it on open library */}
+
 			{book.isbn && book.isbn.length > 0 ? (
 				<a
 					href={`https://www.amazon.com/s?k=${book.isbn[0]}`}
@@ -67,7 +72,7 @@ function BookCard({
 				</a>
 			) : (
 				<a
-					href={`https://openlibrary.org${book.key}`}
+					href={`https://openlibrary.org${book.key || ""}`}
 					target="_blank"
 					rel="noopener noreferrer"
 					className="purchase-link"
@@ -75,8 +80,6 @@ function BookCard({
 					📖 Open Library
 				</a>
 			)}
-
-			{/* <p className="ebook">{`Ebook availability: ${book.ebook_access}`}</p> */}
 
 			{languages.length > 0 ? (
 				<div className="languages-container">
@@ -115,8 +118,11 @@ function BookCard({
 					)}
 				</div>
 			) : (
-				"No language indicated"
+				<div className="languages-container">No language indicated</div>
 			)}
+
+			{/* ✅ Notes component for CRUD on notes */}
+			<Notes bookId={book.id} />
 
 			<div className="book-actions">
 				<select
@@ -124,9 +130,12 @@ function BookCard({
 					value={currentStatus}
 					onChange={(e) => onStatusChange(book, e.target.value)}
 				>
-					<option value="want">📖 Want to Read</option>
-					<option value="reading">📚 Currently Reading</option>
-					<option value="read">✅ Read</option>
+					<option value="" disabled>
+						Set status...
+					</option>
+					<option value="want">Want to Read</option>
+					<option value="reading">Currently Reading</option>
+					<option value="read">Read</option>
 				</select>
 
 				<button
