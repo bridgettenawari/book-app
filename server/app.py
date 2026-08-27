@@ -15,7 +15,10 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # used by the react dev server to send/receive the session cookie
 app.config['SESSION_COOKIE_SAMESITE'] = 'None'
 app.config['SESSION_COOKIE_SECURE'] = False  # set True in production (requires HTTPS)
-CORS(app, supports_credentials=True, origins=["http://localhost:5173", "http://localhost:5174"])
+CORS(app, supports_credentials=True, origins=[
+    "https://your-frontend.vercel.app",
+    "http://localhost:5173"
+])
 
 db.init_app(app)
 bcrypt = Bcrypt(app)
