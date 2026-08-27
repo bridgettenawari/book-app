@@ -14,9 +14,10 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # used by the react dev server to send/receive the session cookie
 app.config['SESSION_COOKIE_SAMESITE'] = 'None'
-app.config['SESSION_COOKIE_SECURE'] = False  # set True in production (requires HTTPS)
+app.config['SESSION_COOKIE_SECURE'] = True
+
 CORS(app, supports_credentials=True, origins=[
-    "https://book-app-3f9e.onrender.com/",
+    "https://loco-for-literature.vercel.app/",
     "http://localhost:5173"
 ])
 
