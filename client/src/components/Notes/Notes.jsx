@@ -60,7 +60,7 @@ function Notes({ bookId }) {
 		if (!updatedContent.trim()) return;
 		apiPatch(`/notes/${id}`, { content: updatedContent.trim() })
 			.then((data) => {
-				if (data.error || !data.id) {
+				if (data.error) {
 					setError(formatError(data.error) || "Could not edit note!");
 				} else {
 					setNotes((prev) => prev.map((n) => (n.id === id ? data : n)));
@@ -74,7 +74,7 @@ function Notes({ bookId }) {
 	const handleDeleteNote = (id) => {
 		apiDelete(`/notes/${id}`)
 			.then((data) => {
-				if (data.error || !data.id) {
+				if (data.error) {
 					setError(formatError(data.error) || "Could not delete note!");
 				} else {
 					setNotes((prev) => prev.filter((n) => n.id !== id));
