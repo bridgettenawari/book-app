@@ -59,19 +59,21 @@
 	gap: 0.35rem;
 	align-items: center;
 	font-size: 0.8rem;
-	color: #666;
+	color: #9fa4a0;
 }
 
 .language {
-	background: #f0eee6;
+	background-color: #e0e0df;
 	padding: 0.15rem 0.5rem;
 	border-radius: 999px;
+	font-weight: 200;
 }
 
 .language-toggle {
 	border: none;
 	cursor: pointer;
-	font-weight: 700;
+	font-weight: 200;
+	color: #666;
 }
 
 .book-actions {
@@ -86,7 +88,9 @@
 	flex: 1;
 	padding: 0.4rem;
 	border-radius: 6px;
-	border: 1px solid #d8d5cb;
+	border: 1px solid #d8d5cb75;
+	background: white;
+	color: #6f6f6f;
 }
 
 .favorite-btn {

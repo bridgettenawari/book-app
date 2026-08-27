@@ -86,20 +86,20 @@ footer {
 
 .user-name {
   color: rgb(255, 255, 255);
-  background-color: rgba(244, 244, 244, 0.489);
+  background-color: #32763457;
   padding: 8px 16px;
-  border-radius: 20px;
+  border-radius: 4px;
   font-weight: 100;
   margin-right: 16px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .logout-btn {
-  background-color: #531b17;
+  background-color: #327634;
   color: white;
   border: none;
   padding: 8px 16px;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 14px;
 }
