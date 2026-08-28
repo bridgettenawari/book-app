@@ -30,9 +30,6 @@ async function apiFetch(path, options = {}) {
     ...(options.headers || {}),
   };
 
-  // Cross-site cookies get blocked by browsers (Safari/Firefox/Chrome all
-  // restrict third-party cookies), so auth is carried via this header
-  // instead of a session cookie.
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
   }

@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "destination": "https://book-app-rosy.vercel.app",
+      "permanent": true
+    }
+  ]
+}

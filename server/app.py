@@ -17,9 +17,6 @@ app.secret_key = 'fake_secret_key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# CORS no longer needs to allow credentials since auth is done via the
-# Authorization header (JWT) instead of cookies. Kept broad origins list
-# in case some deploy previews / localhost testing still hit this API.
 CORS(app, origins=[
     "https://book-app-rosy.vercel.app",
     "http://localhost:5173"
@@ -32,7 +29,7 @@ migrate = Migrate(app, db)
 
 
 def current_user():
-  """Helper to fetch the logged-in user from the JWT identity."""
+  # Helper to fetch the logged-in user from the JWT identity
   user_id = get_jwt_identity()
   return User.query.get(int(user_id)) if user_id is not None else None
 
