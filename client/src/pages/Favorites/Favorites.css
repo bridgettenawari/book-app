@@ -25,3 +25,15 @@
 	border-radius: 8px;
 	cursor: pointer;
 }
+
+.book-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+.book-card {
+  flex: 1 1 220px; /* minimum width */
+  max-width: 300px;
+}

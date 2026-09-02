@@ -24,3 +24,15 @@
 	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 	gap: 1.5rem;
 }
+
+.book-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+.book-card {
+  flex: 1 1 220px; /* minimum width */
+  max-width: 300px;
+}

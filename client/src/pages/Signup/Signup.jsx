@@ -6,6 +6,7 @@ function Signup({ onSignup }) {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState(null);
+	const [message, setMessage] = useState(null);
 
 	const handleSignup = (e) => {
 		e.preventDefault();
@@ -15,7 +16,10 @@ function Signup({ onSignup }) {
 				else {
 					setError(null);
 					setToken(data.access_token); // store JWT for future requests
-					alert("Signup successful!");
+					setMessage("Signup successful!");
+					setTimeout(() => {
+						setMessage(null);
+					}, 3000); // Disappears after 3 seconds
 					if (onSignup) onSignup(data.user);
 				}
 			})
@@ -25,6 +29,7 @@ function Signup({ onSignup }) {
 	return (
 		<div className="signup">
 			<h2 className="signup-title">Signup</h2>
+			{message && <div className="status-message">{message}</div>}
 			{error && <div className="error">{error}</div>}
 			<form onSubmit={handleSignup}>
 				<div className="username-cont">

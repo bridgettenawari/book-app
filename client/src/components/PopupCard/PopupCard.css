@@ -1,0 +1,39 @@
+.popup-card {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(0,0,0,0.6);
+  padding: 12px;
+  border-radius: 8px;
+  z-index: 1000;
+}
+
+.popup-card-content {
+  background: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.popup-card-links {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.popup-card-link {
+  color: #4caf50;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.popup-card-close-btn {
+  margin-top: 10px;
+  background: #b3261e;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}

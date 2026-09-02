@@ -59,3 +59,12 @@
 .login-btn:hover {
 	background-color: #388e3c;
 }
+
+.status-message {
+  background: #4caf50;
+  color: white;
+  padding: 10px;
+  border-radius: 6px;
+  text-align: center;
+  margin-bottom: 12px;
+}

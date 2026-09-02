@@ -95,7 +95,6 @@ def home():
 
 # Books
 @app.route('/books', methods=['GET'])
-@jwt_required()
 def get_books():
   book_schema = BookSchema(many=True)
 
@@ -122,7 +121,6 @@ def get_books():
 
 
 @app.route('/books/kenya', methods=['GET'])
-@jwt_required()
 def get_kenyan_books():
   book_schema = BookSchema(many=True)
 
