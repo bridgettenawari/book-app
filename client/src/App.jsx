@@ -58,7 +58,7 @@ function App() {
 				setMessage("Logged out!");
 				setTimeout(() => {
 					setMessage(null);
-				}, 3000); 
+				}, 3000);
 			})
 			.catch((err) => console.error(err.message));
 	};
@@ -151,17 +151,20 @@ function App() {
 								</NavLink>
 							</>
 						) : (
-							<>
-								<button onClick={handleLogout} className="logout-btn">
+							<div className="user-info">
+								{user && <div className="user-details">
+									<img className="user-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyAUuPXSkqhULddUHjyU8SY6stPRu0ZC3DWBu7qfwRsg&s=10" alt="user-image" />
+									{user.username}</div>}
+
+									<button onClick={handleLogout} className="logout-btn">
 									Logout
 								</button>
-								{user && <span className="user-name">{user.username}</span>}
-							</>
+							</div>
 						)}
 					</nav>
 				</header>
+				{message && <div className="app-message">{message}</div>}
 				<main className="main-content">
-					<div>{message}</div>
 					<Routes>
 						<Route path="/" element={<HomePage />} />
 						<Route
@@ -169,7 +172,7 @@ function App() {
 							element={
 								<AllBooks
 									favorites={favorites}
-									user = {user}
+									user={user}
 									wantToRead={wantToRead}
 									read={read}
 									reading={reading}
@@ -183,6 +186,7 @@ function App() {
 							element={
 								<Favorites
 									favorites={favorites}
+									user = {user}
 									wantToRead={wantToRead}
 									read={read}
 									reading={reading}
@@ -196,6 +200,7 @@ function App() {
 							element={
 								<RecentlyViewed
 									favorites={favorites}
+									user = {user}
 									wantToRead={wantToRead}
 									read={read}
 									reading={reading}

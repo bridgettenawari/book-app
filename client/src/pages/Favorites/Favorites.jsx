@@ -10,6 +10,7 @@ function Favorites({
 	reading = [],
 	onFavorite,
 	onStatusChange,
+	user,
 }) {
 	const [showAllFavorites, setShowAllFavorites] = useState(false);
 	const [showAllWant, setShowAllWant] = useState(false);
@@ -35,6 +36,7 @@ function Favorites({
 								wantToRead={wantToRead}
 								read={read}
 								reading={reading}
+								user = {user}
 							/>
 						))}
 					</div>

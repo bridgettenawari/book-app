@@ -1,5 +1,5 @@
 import "./HomePage.css";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 function HomePage() {
 	return (
@@ -20,9 +20,9 @@ function HomePage() {
 							</a>
 						</button>
 						<button className="login-btn">
-							<Link className="login-link" to="/login">
+							<NavLink className="login-link" to="/login">
 								Login
-							</Link>
+							</NavLink>
 						</button>
 					</div>
 				</div>

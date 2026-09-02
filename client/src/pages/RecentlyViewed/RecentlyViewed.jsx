@@ -10,6 +10,7 @@ function RecentlyViewed({
 	reading = [],
 	onFavorite,
 	onStatusChange,
+	user,
 }) {
 	const [recentBooks, setRecentBooks] = useState([]);
 	const [error, setError] = useState(null);
@@ -52,6 +53,7 @@ function RecentlyViewed({
 							wantToRead={wantToRead}
 							read={read}
 							reading={reading}
+							user = {user}
 						/>
 					))}
 				</div>
