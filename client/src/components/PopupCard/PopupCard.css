@@ -1,39 +1,56 @@
-.popup-card {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: rgba(0,0,0,0.6);
-  padding: 12px;
-  border-radius: 8px;
+.popup{
+  margin: 10px;
+  position: relative;
   z-index: 1000;
 }
 
-.popup-card-content {
-  background: #fff;
-  padding: 16px;
+.popup-content {
+  background-color: #efeeee;
+  padding: 10px;
+  border: 1px solid #859579;
   border-radius: 8px;
   text-align: center;
 }
 
-.popup-card-links {
+.popup-message {
+  color: #859579;
+  font-size: 0.7rem;
+  margin-bottom: 5px;
+}
+
+.popup-links {
   display: flex;
   justify-content: center;
-  gap: 12px;
-  margin-top: 10px;
+  gap: 10px;
+  margin-top: 5px;
 }
 
-.popup-card-link {
-  color: #4caf50;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.popup-card-close-btn {
-  margin-top: 10px;
-  background: #b3261e;
+.popup-login{
+  background-color: #859579;
   color: white;
+  text-decoration: none;
   border: none;
   padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.popup-signup {
+  background-color: #859579;
+  color: white;
+  text-decoration: none;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.popup-close {
+  margin-top: 10px;
+  background-color: #859579;
+  color: white;
+  border: none;
+  padding: 5px 10px;
   border-radius: 6px;
   cursor: pointer;
 }

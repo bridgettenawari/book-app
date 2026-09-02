@@ -1,23 +1,28 @@
-import './PopupCard.css';
+import "./PopupCard.css";
+import { NavLink } from "react-router-dom";
 
-function PopupCard({ message, onClose }) {
-  return (
-    <div className="popup-card">
-      <div className="popup-card-content">
-        <p className="popup-card-message">{message}</p>
-        <div className="popup-card-links">
-          <NavLink to="/login" className="popup-card-link">
-            Login
-          </NavLink>
-          <NavLink to="/signup" className="popup-card-link">
-            Sign Up
-          </NavLink>
-        </div>
-        <button className="popup-card-close-btn" onClick={onClose}>
-          ㄨ
-        </button>
-      </div>
-    </div>
-  );
+function PopupCard({ onClose }) {
+	return (
+		<div className="popup">
+			<div className="popup-content">
+				<p className="popup-message">Sign in to perform this action!</p>
+				<div className="popup-links">
+					<button className="popup-login">
+						<NavLink to="/login" className="popup-login">
+							Login
+						</NavLink>
+					</button>
+					<button className="popup-signup">
+						<NavLink to="/signup" className="popup-signup">
+							Sign Up
+						</NavLink>
+					</button>
+				</div>
+				<button className="popup-close" onClick={onClose}>
+					X
+				</button>
+			</div>
+		</div>
+	);
 }
 export default PopupCard;

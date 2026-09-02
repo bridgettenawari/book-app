@@ -132,8 +132,7 @@ function BookCard({
 				</button>
 			</div>
 			{showPopup && (
-				<Popup
-					message="Signup or login to perform this action!"
+				<PopupCard
 					onClose={() => setShowPopup(false)}
 				/>
 			)}
