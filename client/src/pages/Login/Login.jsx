@@ -14,7 +14,7 @@ function Login({ onLogin }) {
 				if (data.error) setError(data.error);
 				else {
 					setError(null);
-					setToken(data.access_token); // store JWT for future requests
+					setToken(data.access_token); // store JWT token
 					onLogin(data.user); // persist user data
 				}
 			})

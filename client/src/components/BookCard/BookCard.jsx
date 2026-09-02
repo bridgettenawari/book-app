@@ -20,6 +20,7 @@ function BookCard({
 		? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`
 		: "https://via.placeholder.com/150";
 
+	// .some is used to check if sth is in the array if it is, it returns true if not, it returns false
 	const isFavorite = favorites.some((fav) => fav.id === book.id);
 
 	let currentStatus = "";
@@ -28,8 +29,8 @@ function BookCard({
 	else if (read.some((b) => b.id === book.id)) currentStatus = "read";
 
 	const languages = book.language || [];
-	const mainLanguages = languages.slice(0, 3);
-	const extraLanguages = languages.slice(3);
+	const mainLanguages = languages.slice(0, 3); //first 3
+	const extraLanguages = languages.slice(3); // the rest
 
 	// Show popup if not logged in and user tries to add to favorites or change status
 	const handleFavoriteClick = () => {
@@ -67,6 +68,7 @@ function BookCard({
 					: book.author || "Author unknown"}
 			</h4>
 
+			{/* shows only the first 3 languages then there's a show more button */}
 			{languages.length > 0 ? (
 				<div className="languages-container">
 					Languages:
@@ -108,7 +110,7 @@ function BookCard({
 			)}
 
 			{/* NOTES*/}
-			<Notes bookId={book.id} user={user} setShowPopup={setShowPopup}/>
+			<Notes bookId={book.id} user={user} setShowPopup={setShowPopup} />
 
 			<div className="book-actions">
 				<select
@@ -131,11 +133,7 @@ function BookCard({
 					{isFavorite ? "★" : "☆"}
 				</button>
 			</div>
-			{showPopup && (
-				<PopupCard
-					onClose={() => setShowPopup(false)}
-				/>
-			)}
+			{showPopup && <PopupCard onClose={() => setShowPopup(false)} />}
 		</div>
 	);
 }

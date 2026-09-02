@@ -21,7 +21,7 @@ function App() {
 	//users
 	const [user, setUser] = useState(null);
 
-	// Checks if user is logged in (only worth asking if we actually have a token)
+	// Checks if user is logged in (if there's a JWT token)
 	useEffect(() => {
 		if (!getToken()) {
 			setUser(null);
@@ -130,6 +130,7 @@ function App() {
 						<NavLink to="/books" className="navlink">
 							🗒 Books
 						</NavLink>
+						{/* If the user is logged in, load favorites page and recents page */}
 						{user && (
 							<>
 								<NavLink to="/favorites" className="navlink">
@@ -141,6 +142,7 @@ function App() {
 							</>
 						)}
 
+						{/* If the user is not logged in, show login and signup links, otherwise show the username and pfp and a logout button */}
 						{!user ? (
 							<>
 								<NavLink to="/login" className="navlink">
@@ -172,7 +174,7 @@ function App() {
 							element={
 								<AllBooks
 									favorites={favorites}
-									user={user}
+									user={user} // Pass the user state for the signin popup
 									wantToRead={wantToRead}
 									read={read}
 									reading={reading}

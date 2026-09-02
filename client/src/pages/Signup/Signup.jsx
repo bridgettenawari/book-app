@@ -14,8 +14,8 @@ function Signup({ onSignup }) {
 				if (data.error) setError(data.error);
 				else {
 					setError(null);
-					setToken(data.access_token); // store JWT for future requests
-					if (onSignup) onSignup(data.user);
+					setToken(data.access_token); // store JWT token
+					if (onSignup) onSignup(data.user); // persist user data
 				}
 			})
 			.catch((err) => setError(err.message));

@@ -36,7 +36,7 @@ function Notes({ bookId, user, setShowPopup }) {
 					setError(formatError(data.error) || "Could not fetch notes!");
 					setNotes([]);
 				} else {
-					setNotes(Array.isArray(data) ? data : []); // ensures it's an array
+					setNotes(Array.isArray(data) ? data : []);
 				}
 				setLoading(false);
 			})
@@ -75,6 +75,7 @@ function Notes({ bookId, user, setShowPopup }) {
 					setError(formatError(data.error) || "Could not edit note!");
 				} else {
 					setNotes((prev) => prev.map((n) => (n.id === id ? data : n)));
+					setNewNote("");
 					setError(null);
 				}
 			})

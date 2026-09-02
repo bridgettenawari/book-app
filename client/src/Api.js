@@ -3,8 +3,7 @@ const BASE_URL = import.meta.env.VITE_API_URL || "https://book-app-3f9e.onrender
 
 const TOKEN_KEY = "access_token";
 
-// Keep the token in memory for fast access, but persist it to localStorage
-// so a page refresh doesn't log the user out.
+// Keep the token in memory for fast access and persist it to localStorage
 let token = localStorage.getItem(TOKEN_KEY) || null;
 
 export function setToken(newToken) {
@@ -24,22 +23,24 @@ export function clearToken() {
   setToken(null);
 }
 
+// Ensures authorization only happens if the token exists
+function authHeaders() {
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
 async function apiFetch(path, options = {}) {
   const headers = {
     "Content-Type": "application/json",
+    ...authHeaders(),
     ...(options.headers || {}),
   };
-
-  if (token) {
-    headers["Authorization"] = `Bearer ${token}`;
-  }
 
   const res = await fetch(`${BASE_URL}${path}`, {
     headers,
     ...options,
   });
 
-  // Handle 204 (logout) with no body
+  // Handle logout
   if (res.status === 204) return {};
 
   let data;

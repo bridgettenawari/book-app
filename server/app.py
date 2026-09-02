@@ -1,5 +1,4 @@
 import os
-
 from flask import Flask, make_response, request, jsonify
 from flask_migrate import Migrate
 from flask_jwt_extended import (
@@ -14,7 +13,7 @@ from marshmallow import ValidationError
 from flask_cors import CORS
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv() # Load environment variables from .env file
 
 app = Flask(__name__)
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
@@ -22,6 +21,7 @@ app.secret_key = os.getenv('FLASK_SECRET_KEY')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+# CORS allows for the deployed app to fetch data from the deployed backend
 CORS(app, origins=os.getenv("CORS_ORIGINS").split(","))
 
 db.init_app(app)
@@ -31,7 +31,7 @@ migrate = Migrate(app, db)
 
 
 def current_user():
-  # Helper to fetch the logged-in user from the JWT identity
+  # Fetch the logged in user based on the JWT identity
   user_id = get_jwt_identity()
   return User.query.get(int(user_id)) if user_id is not None else None
 
@@ -78,11 +78,11 @@ def login():
 
 @app.route('/logout', methods=['DELETE'])
 def logout():
-  # Stateless JWTs: there's nothing to invalidate server-side.
-  # The frontend just discards the token it's holding.
+  # Return an empty response to dump the JWT token on the frontend logging the user out
   return make_response({}, 204)
 
 @app.route('/check', methods=['GET'])
+# Checks if the user is logged in by verifying the JWT token
 @jwt_required()
 def check_session():
   user_schema = UserSchema()
@@ -112,7 +112,7 @@ def get_books():
   # Paginate the query
   pagination = query.paginate(page=page, per_page=per_page, error_out=False)
 
-  # Return paginated results + metadata
+  # Return paginated results
   return make_response(jsonify({
       "page": pagination.page,
       "per_page": pagination.per_page,
@@ -310,7 +310,7 @@ def edit_note(id):
   except ValidationError as err:
     return make_response(jsonify({"error": err.messages}), 400)
 
-  # Get the key value pairs from the data received and change the value of the selected note
+  # Get the key value pairs from the data fetched and change the value of the selected note
   for key,value in data.items():
     setattr(note, key, value)
   db.session.commit()

@@ -17,7 +17,7 @@ function Favorites({
 	const [showAllRead, setShowAllRead] = useState(false);
 	const [showAllReading, setShowAllReading] = useState(false);
 
-	const renderSection = (title, books, showAll, setShowAll) => (
+	const showSection = (title, books, showAll, setShowAll) => (
 		<section className="favorites-section">
 			<h2>{title}</h2>
 			{books.length === 0 ? (
@@ -43,7 +43,7 @@ function Favorites({
 					{books.length > 6 && (
 						<button
 							className="show-more-btn"
-							onClick={() => setShowAll(!showAll)}
+							onClick={() => setShowAll(!showAll)} // sets it to the opposite of what it was before
 						>
 							{showAll ? "Show Less" : "Show More"}
 						</button>
@@ -54,16 +54,17 @@ function Favorites({
 	);
 
 	return (
+		// dynamically shows the different sections of the favorites page based on the books in each category
 		<div className="favorites-page">
-			{renderSection(
+			{showSection(
 				" ★ Favorites",
 				favorites,
 				showAllFavorites,
 				setShowAllFavorites,
 			)}
-			{renderSection("⏱ Want to Read", wantToRead, showAllWant, setShowAllWant)}
-			{renderSection("✓ Read", read, showAllRead, setShowAllRead)}
-			{renderSection(
+			{showSection("⏱ Want to Read", wantToRead, showAllWant, setShowAllWant)}
+			{showSection("✓ Read", read, showAllRead, setShowAllRead)}
+			{showSection(
 				"⌛︎ Currently Reading",
 				reading,
 				showAllReading,

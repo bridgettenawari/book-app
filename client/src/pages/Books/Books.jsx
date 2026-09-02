@@ -21,12 +21,12 @@ function Books({
 	const [page, setPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(1);
 
-	// Reset to page 1 whenever the endpoint changes (switching All/Kenya tabs) or a new search is submitted
+	// Reset to the first page when the endpoint changes (/books and /books/kenya) or sth is searched up
 	useEffect(() => {
 		setPage(1);
 	}, [endpoint, search]);
 
-	// useEffect for browsing and search.
+	// useEffect for browsing and for searching.
 	useEffect(() => {
 		setLoading(true);
 		const params = new URLSearchParams({ page, per_page: 30 });
@@ -50,7 +50,7 @@ function Books({
 	}, [endpoint, page, search]);
 
 	const handleSearchSubmit = (e) => {
-		e.preventDefault();
+		e.preventDefault(); // Prevent the page from reloading when the form is submitted
 		setSearch(searchInput.trim());
 	};
 
@@ -64,6 +64,7 @@ function Books({
 					onChange={(e) => setSearchInput(e.target.value)}
 				/>
 				<button type="submit">Search</button>
+				{/* Clears the search bar */}
 				{search && (
 					<button
 						type="button"
@@ -95,8 +96,9 @@ function Books({
 				<div className="pagination-container">
 					<button
 						className="prev-page-btn"
+						// Checks which page is bigger btwn current page-1 and page 1 and if page 1 is bigger, it sets the page to page 1 otherwise it sets the page to current page-1
 						onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-						disabled={page === 1}
+						disabled={page === 1} // Disables the button if the current page is 1
 					>
 						←
 					</button>
@@ -105,6 +107,7 @@ function Books({
 					</span>
 					<button
 						className="next-page-btn"
+						// Checks which page is smaller btwn current page+1 and total pages and if total pages is smaller, it sets the page to total pages otherwise it sets the page to current page+1
 						onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
 						disabled={page >= totalPages}
 					>
