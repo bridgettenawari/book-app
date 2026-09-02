@@ -6,6 +6,14 @@ This is a full‑stack book management application where users can browse, searc
 - Ebook availability
 - Languages that the book is available in
 
+How to operate the application:
+- From the homepage, using either the login button there or clicking on the login/signup route, signup or log into your account.
+- Head to the books route to browse some books either Kenyan books or Global books depending on what you're in the mood for.
+- Add books either to favourites, read, want to read or currently reading.
+- You can view the books you've added to those lists in the favorites tab.
+- You can add notes to your books and edit or delete them.
+- Any book that you've interacted with by adding it to a list can be viewed in the recents tab to help you keep track of you're most recently viewed books.
+
 Technologies used:
 
 - React(frontend)
