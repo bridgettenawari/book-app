@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import { apiGet, apiPost, apiPatch, apiDelete } from "../../Api";
 import "./Notes.css";
 
-function Notes({ bookId }) {
+function Notes({ bookId, user, setShowPopup }) {
 	const [notes, setNotes] = useState([]);
 	const [newNote, setNewNote] = useState("");
+	const [editingNoteId, setEditingNoteId] = useState(null);
 	const [error, setError] = useState(null);
 	const [loading, setLoading] = useState(true);
 
@@ -41,6 +42,10 @@ function Notes({ bookId }) {
 ``
 	// Add a new note
 	const handleAddNote = () => {
+	if (!user) {
+			setShowPopup(true);
+			return;
+		}
 		if (!newNote.trim()) return;
 		apiPost(`/books/${bookId}/notes`, { content: newNote.trim() })
 			.then((data) => {
@@ -98,22 +103,21 @@ function Notes({ bookId }) {
 				{notes.map((note) =>
 					note && note.id ? (
 						<li key={note.id} className="note-item">
-							<span>{note.content}</span>
+							<div className="note-content">{note.content}</div>
 							<div className="note-actions">
 								<button
 									className="edit-btn"
 									onClick={() => {
-										const updated = prompt("Edit note:", note.content);
-										if (updated !== null) handleEditNote(note.id, updated);
+										setEditingNoteId(note.id);
 									}}
 								>
-									✎ Edit
+									𓂃🖊 
 								</button>
 								<button
 									className="delete-btn"
 									onClick={() => handleDeleteNote(note.id)}
 								>
-									🗑 Delete
+									🗑 
 								</button>
 							</div>
 						</li>
@@ -125,11 +129,17 @@ function Notes({ bookId }) {
 				<textarea
 					value={newNote}
 					onChange={(e) => setNewNote(e.target.value)}
-					placeholder="Write a note..."
+					placeholder={editingNoteId ? "Edit note..." : "Write a note..."} // if editing, show editing note, otherwise show write note
 				/>
-				<button onClick={handleAddNote} disabled={!newNote.trim()}>
-					{" "}
-					{/*Disable button if note is empty*/}+ Add Note
+				<button onClick={() => {
+					if (editingNoteId) {
+						handleEditNote(editingNoteId, newNote);
+						setEditingNoteId(null);
+					} else {
+						handleAddNote();
+					}
+				}} disabled={!newNote.trim()}>
+					{editingNoteId ? "Save Note" : "+ Add Note"}
 				</button>
 			</div>
 		</div>

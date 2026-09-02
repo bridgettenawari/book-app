@@ -11,6 +11,7 @@ function Books({
 	reading = [],
 	onStatusChange,
 	onFavorite,
+	user
 }) {
 	const [books, setBooks] = useState([]);
 	const [searchInput, setSearchInput] = useState("");
@@ -87,6 +88,7 @@ function Books({
 				wantToRead={wantToRead}
 				read={read}
 				reading={reading}
+				user={user}
 			/>
 
 			{!loading && !error && (

@@ -14,7 +14,7 @@
 
 .home-title {
 	font-size: 36px;
-	color: #4caf50;
+	color: #859579;
 }
 
 .home-message {
@@ -31,7 +31,7 @@
 
 .github-btn,
 .login-btn {
-	background-color: #4caf50;
+	background-color: #859579;
 	color: white;
 	border: none;
 	padding: 12px 20px;
@@ -42,19 +42,21 @@
 
 .github-btn:hover,
 .login-btn:hover {
-	background-color: #388e3c;
+	background-color: #859579;
 }
 
-.github-link, .login-link {
+.github-link,
+.login-link {
 	color: white;
 	text-decoration: none;
 }
 
-.github-link:visited, .login-link:visited {
+.github-link:visited,
+.login-link:visited {
 	color: rgb(196, 195, 195);
 }
 
-.home-image{
+.home-image {
 	display: flex;
 	gap: 20px;
 	justify-content: flex-end;

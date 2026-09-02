@@ -35,7 +35,7 @@ function RecentlyViewed({
 
 	return (
 		<div className="recent-page">
-			<h2 className="recent-title">🕰 Recently Viewed</h2>
+			<h2 className="recent-title">🕰 Recents</h2>
 			{loading && <div>Loading...</div>}
 			{error && <div className="error-message">Error: {error}</div>}
 			{!loading && !error && recentBooks.length === 0 ? (

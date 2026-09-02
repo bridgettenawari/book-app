@@ -1,5 +1,6 @@
 import "./BookCard.css";
 import Notes from "../Notes/Notes";
+import PopupCard from "../PopupCard/PopupCard";
 import { useState } from "react";
 
 function BookCard({
@@ -10,25 +11,42 @@ function BookCard({
 	wantToRead = [],
 	read = [],
 	reading = [],
+	user,
 }) {
 	const [showLanguages, setShowLanguages] = useState(false);
+	const [showPopup, setShowPopup] = useState(false);
 
 	const cover = book.cover_i
 		? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`
 		: "https://via.placeholder.com/150";
 
-	// ✅ Match on book.id (your DB primary key), not Open Library's `key`
 	const isFavorite = favorites.some((fav) => fav.id === book.id);
 
 	let currentStatus = "";
 	if (wantToRead.some((b) => b.id === book.id)) currentStatus = "want";
 	else if (reading.some((b) => b.id === book.id)) currentStatus = "reading";
 	else if (read.some((b) => b.id === book.id)) currentStatus = "read";
-	// leave "" so dropdown shows placeholder if no status
 
 	const languages = book.language || [];
 	const mainLanguages = languages.slice(0, 3);
 	const extraLanguages = languages.slice(3);
+
+	// Show popup if not logged in and user tries to add to favorites or change status
+	const handleFavoriteClick = () => {
+		if (!user) {
+			setShowPopup(true);
+			return;
+		}
+		onFavorite(book);
+	};
+
+	const handleStatusChange = (e) => {
+		if (!user) {
+			setShowPopup(true);
+			return;
+		}
+		onStatusChange(book, e.target.value);
+	};
 
 	return (
 		<div className="book-card">
@@ -48,28 +66,6 @@ function BookCard({
 					? book.author_name[0]
 					: book.author || "Author unknown"}
 			</h4>
-
-			{book.epub_link && (
-				<a
-					href={book.epub_link}
-					target="_blank"
-					className="epub-link"
-				>
-					EPUB
-				</a>
-			)}
-
-			{book.key ? (
-				<a
-					href={`https://openlibrary.org${book.key}`}
-					target="_blank"
-					className="purchase-link"
-				>
-					Open Library
-				</a>
-			) : (
-				<div className="purchase-link">No Open Library link</div>
-			)}
 
 			{languages.length > 0 ? (
 				<div className="languages-container">
@@ -112,13 +108,13 @@ function BookCard({
 			)}
 
 			{/* NOTES*/}
-			<Notes bookId={book.id} />
+			<Notes bookId={book.id} user={user} setShowPopup={setShowPopup}/>
 
 			<div className="book-actions">
 				<select
 					className="status-dropdown"
 					value={currentStatus}
-					onChange={(e) => onStatusChange(book, e.target.value)}
+					onChange={handleStatusChange}
 				>
 					<option value="" disabled>
 						Set status...
@@ -130,11 +126,17 @@ function BookCard({
 
 				<button
 					className={`favorite-btn ${isFavorite ? "favorited" : ""}`}
-					onClick={() => onFavorite(book)}
+					onClick={handleFavoriteClick}
 				>
 					{isFavorite ? "★" : "☆"}
 				</button>
 			</div>
+			{showPopup && (
+				<Popup
+					message="Signup or login to perform this action!"
+					onClose={() => setShowPopup(false)}
+				/>
+			)}
 		</div>
 	);
 }

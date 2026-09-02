@@ -11,6 +11,7 @@ function BookList({
   wantToRead,
   read,
   reading,
+  user
 }) {
   if (loading) {
     return (
@@ -40,6 +41,7 @@ function BookList({
           wantToRead={wantToRead}
           read={read}
           reading={reading}
+          user={user}
         />
       ))}
     </div>

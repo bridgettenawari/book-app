@@ -16,6 +16,7 @@ function App() {
 	const [reading, setReading] = useState([]);
 	const [wantToRead, setWantToRead] = useState([]);
 	const [read, setRead] = useState([]);
+	const [message, setMessage] = useState(null);
 
 	//users
 	const [user, setUser] = useState(null);
@@ -43,6 +44,10 @@ function App() {
 
 	const handleLogin = (userData) => {
 		setUser(userData);
+		setMessage("Logged in successfully!");
+		setTimeout(() => {
+			setMessage(null);
+		}, 3000); // Disappears after 3 seconds
 	};
 
 	const handleLogout = () => {
@@ -50,13 +55,20 @@ function App() {
 			.then(() => {
 				clearToken();
 				setUser(null);
-				alert("Logged out!");
+				setMessage("Logged out!");
+				setTimeout(() => {
+					setMessage(null);
+				}, 3000); 
 			})
 			.catch((err) => console.error(err.message));
 	};
 
 	const handleSignup = (userData) => {
 		setUser(userData);
+		setMessage("Signed up successfully!");
+		setTimeout(() => {
+			setMessage(null);
+		}, 3000);
 	};
 
 	// Loads the logged-in user's lists
@@ -118,12 +130,17 @@ function App() {
 						<NavLink to="/books" className="navlink">
 							🗒 Books
 						</NavLink>
-						<NavLink to="/favorites" className="navlink">
-							✩ Favorites
-						</NavLink>
-						<NavLink to="/recent" className="navlink">
-							🕰 Recently viewed
-						</NavLink>
+						{user && (
+							<>
+								<NavLink to="/favorites" className="navlink">
+									✩ Favorites
+								</NavLink>
+								<NavLink to="/recent" className="navlink">
+									🕰 Recents
+								</NavLink>
+							</>
+						)}
+
 						{!user ? (
 							<>
 								<NavLink to="/login" className="navlink">
@@ -144,6 +161,7 @@ function App() {
 					</nav>
 				</header>
 				<main className="main-content">
+					<div>{message}</div>
 					<Routes>
 						<Route path="/" element={<HomePage />} />
 						<Route
@@ -151,6 +169,7 @@ function App() {
 							element={
 								<AllBooks
 									favorites={favorites}
+									user = {user}
 									wantToRead={wantToRead}
 									read={read}
 									reading={reading}

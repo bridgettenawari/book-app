@@ -1,54 +1,54 @@
-.signup{
-  background-color: #f5f5f5;
-  margin: 20px;
-  padding: 20px;
-  border-radius: 20px;
-  align-items: center;
+.signup {
+	background-color: #f5f5f5;
+	margin: 20px;
+	padding: 20px;
+	border-radius: 20px;
+	align-items: center;
 }
 
-.signup-title{
-  font-size: 30px;
-  font-family: sans-serif;
-  font-weight: 600;
-  text-align: center;
-  margin-bottom: 20px;
-  color: #388e3c;
+.signup-title {
+	font-size: 30px;
+	font-family: sans-serif;
+	font-weight: 600;
+	text-align: center;
+	margin-bottom: 20px;
+	color: #859579;
 }
 
-.username-cont{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 20px;
+.username-cont {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 20px;
 }
-.password-cont{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 20px;
+.password-cont {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 20px;
 }
-.signup-btn-cont{
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.signup-btn-cont {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
-.label{
-  font-size: 16px;
-  margin-right: 8px;
-  font-family: sans-serif;
-  font-weight: 100;
+.label {
+	font-size: 16px;
+	margin-right: 8px;
+	font-family: sans-serif;
+	font-weight: 100;
 }
 
 .input {
-  padding: 8px 30px;
-  margin-bottom: 10px;
-  border: 1px solid rgb(196, 190, 190);
-  border-radius: 20px;
+	padding: 8px 30px;
+	margin-bottom: 10px;
+	border: 1px solid rgb(196, 190, 190);
+	border-radius: 20px;
 }
 
 .signup-btn {
-	background-color: #4caf50;
+	background-color: #859579;
 	color: white;
 	border: none;
 	padding: 12px 20px;
@@ -58,14 +58,6 @@
 }
 
 .signup-btn:hover {
-	background-color: #388e3c;
+	background-color: #859579;
 }
 
-.status-message {
-  background: #4caf50;
-  color: white;
-  padding: 10px;
-  border-radius: 6px;
-  text-align: center;
-  margin-bottom: 12px;
-}

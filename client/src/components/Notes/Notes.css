@@ -35,6 +35,10 @@
 	font-size: 0.85rem;
 }
 
+.note-content{
+	display: block;
+}
+
 .note-actions {
 	display: flex;
 	gap: 0.35rem;
@@ -43,13 +47,20 @@
 
 .note-actions button {
 	border: none;
-	background: none;
 	cursor: pointer;
-	font-size: 0.8rem;
+	font-size: 0.85rem;
+	padding: 0.25rem 0.5rem;
+	border-radius: 6px;
+}
+
+.edit-btn {
+	background-color: #83c3d6;
+	color: white;
 }
 
 .delete-btn {
-	color: #b3261e;
+	background-color: #432f57;
+	color: white;
 }
 
 .add-note {
@@ -73,7 +84,7 @@
 	padding: 0.35rem 0.8rem;
 	border: none;
 	border-radius: 6px;
-	background-color: #4CAF50;
+	background-color: #859579;
 	color: #fff;
 	cursor: pointer;
 }

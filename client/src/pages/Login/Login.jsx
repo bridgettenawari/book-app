@@ -6,7 +6,6 @@ function Login({ onLogin }) {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState(null);
-	const [message, setMessage] = useState(null);
 
 	const handleLogin = (e) => {
 		e.preventDefault();
@@ -16,10 +15,6 @@ function Login({ onLogin }) {
 				else {
 					setError(null);
 					setToken(data.access_token); // store JWT for future requests
-					setMessage("Login successful!");
-					setTimeout(() => {
-						setMessage(null);
-					}, 3000); // Disappears after 3 seconds
 					onLogin(data.user); // persist user data
 				}
 			})
@@ -28,7 +23,6 @@ function Login({ onLogin }) {
 
 	return (
 		<div className="login">
-			{message && <div className="status-message">{message}</div>}
 			<h2 className="login-title">Login</h2>
 			{error && <div className="error">{error}</div>}
 			<form onSubmit={handleLogin}>

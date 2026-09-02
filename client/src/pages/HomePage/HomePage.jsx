@@ -28,11 +28,11 @@ function HomePage() {
 				</div>
 				<div className="home-image">
 					<img
-						src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4LVsfkwq5fWWTdmjlnfclfetbEnLMvbCEjO05xmd_2w&s=10"
+						src="https://i.pinimg.com/564x/11/8c/68/118c68aabd2948d1d82b72f6cf5c3f7a.jpg"
 						alt="Book image 1"
 					/>
 					<img
-						src ="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmRRhAUuz3jCsnXBkvNSoNgR22wnF7EHJXufCikG-aXA&s=10"
+						src ="https://i.pinimg.com/736x/69/17/98/691798326704e2ee2c9a9a8b5562929c.jpg"
 						alt="Book image 2"
 					/>
 				</div>

@@ -1,33 +1,36 @@
-.contacts{
-  background-color: #4caf50;
-  display: flex;
-  justify-content: space-around;
-  padding: 12px 20px;
+.contacts {
+	background-color: #859579;
+	display: flex;
+	justify-content: space-around;
+	padding: 12px 20px;
 }
 
-.contacts-text{
-  display: flex;
+.contacts-text {
+	display: flex;
 }
 
-.contact-text{
-  color: white;
-  margin-right: 8px;
+.contact-text {
+	color: white;
+	margin-right: 8px;
 }
 
-.phone, .email{
-  color: white;
-  margin-right: 8px;
-  text-decoration: none;
+.phone,
+.email {
+	color: white;
+	margin-right: 8px;
+	text-decoration: none;
 }
 
-.phone:visited, .email:visited{
-  color: rgb(122, 122, 122);
+.phone:visited,
+.email:visited {
+	color: rgb(122, 122, 122);
 }
 
-.phone:hover, .email:hover{
-  color: rgb(176, 176, 176);
+.phone:hover,
+.email:hover {
+	color: rgb(176, 176, 176);
 }
 
-.copyright{
-  color: white;
+.copyright {
+	color: white;
 }

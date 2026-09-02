@@ -9,6 +9,7 @@ function AllBooks({
 	reading,
 	onFavorite,
 	onStatusChange,
+	user
 }) {
 	return (
 		<div className="books-wrapper">
@@ -33,6 +34,7 @@ function AllBooks({
 							reading={reading}
 							onFavorite={onFavorite}
 							onStatusChange={onStatusChange}
+							user = {user}
 						/>
 					}
 				/>
@@ -47,6 +49,7 @@ function AllBooks({
 							reading={reading}
 							onFavorite={onFavorite}
 							onStatusChange={onStatusChange}
+							user = {user}
 						/>
 					}
 				/>
