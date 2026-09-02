@@ -42,3 +42,6 @@ Core Functionality
 Deployment links:
 - Frontend: https://book-app-rosy.vercel.app/
 - Backend: https://book-app-3f9e.onrender.com
+
+My presentation link:
+- https://docs.google.com/presentation/d/10Zz7Ccn-AasnwdEBUt0H58FCM5De5JUoFFza03AUI2Q/edit?usp=sharing
