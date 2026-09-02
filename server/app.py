@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, make_response, request, jsonify
 from flask_migrate import Migrate
 from flask_jwt_extended import (
@@ -10,17 +12,17 @@ from flask_bcrypt import Bcrypt
 from models import *
 from marshmallow import ValidationError
 from flask_cors import CORS
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
-app.config['JWT_SECRET_KEY'] = 'fake_secret_key'
-app.secret_key = 'fake_secret_key'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
+app.secret_key = os.getenv('FLASK_SECRET_KEY')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-CORS(app, origins=[
-    "https://book-app-rosy.vercel.app",
-    "http://localhost:5173"
-])
+CORS(app, origins=os.getenv("CORS_ORIGINS").split(","))
 
 db.init_app(app)
 bcrypt = Bcrypt(app)
