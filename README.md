@@ -3,7 +3,6 @@ This is a full‑stack book management application where users can browse, searc
 - The author
 - Series details (name and position)
 - Year of publication
-- Ebook availability
 - Languages that the book is available in
 
 How to operate the application:
