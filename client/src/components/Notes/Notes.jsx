@@ -23,6 +23,12 @@ function Notes({ bookId, user, setShowPopup }) {
 
 	// Fetch notes for the book
 	useEffect(() => {
+		if (!user) {
+			// Prevents showing error 401 if not logged in
+			setNotes([]);
+			setLoading(false);
+			return;
+		}
 		setLoading(true);
 		apiGet(`/books/${bookId}/notes`)
 			.then((data) => {
@@ -38,11 +44,11 @@ function Notes({ bookId, user, setShowPopup }) {
 				setError(err.message);
 				setLoading(false);
 			});
-	}, [bookId]);
-``
+	}, [bookId, user]); // fetch notes if logged in and if a note is added, edited, or deleted
+	``;
 	// Add a new note
 	const handleAddNote = () => {
-	if (!user) {
+		if (!user) {
 			setShowPopup(true);
 			return;
 		}
@@ -92,7 +98,11 @@ function Notes({ bookId, user, setShowPopup }) {
 	return (
 		<div className="notes-section">
 			<h3>Notes</h3>
-			{loading && <div>Loading notes...</div>}
+			{loading && (
+				<div className="notes-status">
+					<div className="spinner">↻</div>loading...
+				</div>
+			)}
 			{error && <div className="error-message">Error: {error}</div>}
 
 			{!loading && notes.length === 0 && (
@@ -111,13 +121,13 @@ function Notes({ bookId, user, setShowPopup }) {
 										setEditingNoteId(note.id);
 									}}
 								>
-									𓂃🖊 
+									𓂃🖊
 								</button>
 								<button
 									className="delete-btn"
 									onClick={() => handleDeleteNote(note.id)}
 								>
-									🗑 
+									🗑
 								</button>
 							</div>
 						</li>
@@ -131,14 +141,17 @@ function Notes({ bookId, user, setShowPopup }) {
 					onChange={(e) => setNewNote(e.target.value)}
 					placeholder={editingNoteId ? "Edit note..." : "Write a note..."} // if editing, show editing note, otherwise show write note
 				/>
-				<button onClick={() => {
-					if (editingNoteId) {
-						handleEditNote(editingNoteId, newNote);
-						setEditingNoteId(null);
-					} else {
-						handleAddNote();
-					}
-				}} disabled={!newNote.trim()}>
+				<button
+					onClick={() => {
+						if (editingNoteId) {
+							handleEditNote(editingNoteId, newNote);
+							setEditingNoteId(null);
+						} else {
+							handleAddNote();
+						}
+					}}
+					disabled={!newNote.trim()}
+				>
 					{editingNoteId ? "Save Note" : "+ Add Note"}
 				</button>
 			</div>

@@ -37,7 +37,11 @@ function RecentlyViewed({
 	return (
 		<div className="recent-page">
 			<h2 className="recent-title">🕰 Recents</h2>
-			{loading && <div>Loading...</div>}
+			{loading && (
+				<div className="recent-status">
+					<div className="spinner">↻</div>loading...
+				</div>
+			)}
 			{error && <div className="error-message">Error: {error}</div>}
 			{!loading && !error && recentBooks.length === 0 ? (
 				<p>You haven’t viewed any books yet. Browse books to get started.</p>
@@ -53,7 +57,7 @@ function RecentlyViewed({
 							wantToRead={wantToRead}
 							read={read}
 							reading={reading}
-							user = {user}
+							user={user}
 						/>
 					))}
 				</div>
